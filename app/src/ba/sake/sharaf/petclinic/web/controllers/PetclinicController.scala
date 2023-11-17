@@ -1,4 +1,4 @@
-package ba.sake.sharaf.petclinic.controllers
+package ba.sake.sharaf.petclinic.web.controllers
 
 import ba.sake.sharaf.routing.Routes
 

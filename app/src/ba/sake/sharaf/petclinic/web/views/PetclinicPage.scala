@@ -1,8 +1,11 @@
-package ba.sake.sharaf.petclinic.views
+package ba.sake.sharaf.petclinic.web.views
 
 import Bundle.*, Tags.*
 
-trait PetclinicPage extends Bundle.Page {
+trait PetclinicPage extends Page {
+
+  override def siteSettings =
+    super.siteSettings.withName("Sharaf Petclinic")
 
   override def styleURLs: List[String] = super.styleURLs ++ List(
     "/styles/main.css"
@@ -12,7 +15,7 @@ trait PetclinicPage extends Bundle.Page {
     Navbar.full(
       brandUrl = "/",
       brandName = Some("PetClinic"),
-      right = Seq(
+      left = Seq(
         a(href := "/owners", cls := "nav-link")("Owners") -> Seq.empty,
         a(href := "/vets", cls := "nav-link")("Veterinarians") -> Seq.empty
       )

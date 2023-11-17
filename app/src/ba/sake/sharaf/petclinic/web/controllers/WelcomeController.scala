@@ -1,7 +1,7 @@
-package ba.sake.sharaf.petclinic.controllers
+package ba.sake.sharaf.petclinic.web.controllers
 
 import ba.sake.sharaf.*, routing.*
-import ba.sake.sharaf.petclinic.views.ViewsFactory
+import ba.sake.sharaf.petclinic.web.views.ViewsFactory
 
 class WelcomeController extends PetclinicController {
 
