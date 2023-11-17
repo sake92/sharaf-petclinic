@@ -1,12 +1,8 @@
 package ba.sake.sharaf.petclinic
 
-import java.util.UUID
-import io.undertow.Undertow
 import com.typesafe.config.ConfigFactory
-import ba.sake.tupson.*
-import ba.sake.validson.*
-import ba.sake.sharaf.handlers.CorsSettings
-import ba.sake.sharaf.*, routing.*, utils.*
+import ba.sake.sharaf.*
+import ba.sake.sharaf.utils.*
 
 @main def main: Unit = {
 

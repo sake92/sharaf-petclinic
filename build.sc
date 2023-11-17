@@ -1,7 +1,6 @@
-import mill._
-import mill.scalalib._
+import mill._, scalalib._, scalafmt._
 
-object app extends ScalaModule {
+object app extends ScalaModule with ScalafmtModule {
 
   def mainClass = T(Some("ba.sake.sharaf.petclinic.main"))
 
@@ -10,11 +9,12 @@ object app extends ScalaModule {
   def scalacOptions = super.scalacOptions() ++ Seq(
     "-Yretain-trees",
     "-deprecation",
-    "-Wunused:all"
+    "-Wunused:all",
+    "-explain"
   )
 
   def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.0.11",
+    ivy"ba.sake::sharaf:0.0.13",
     // db
     ivy"org.postgresql:postgresql:42.6.0",
     ivy"com.zaxxer:HikariCP:5.0.1",
