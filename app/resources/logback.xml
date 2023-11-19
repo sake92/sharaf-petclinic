@@ -8,6 +8,8 @@
 <!--
   <logger name="org.pac4j" level="debug" />
 -->
+
+  <logger name="ba.sake.squery" level="debug" />
   
 
   <root level="info">

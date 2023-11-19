@@ -6,4 +6,6 @@ case class VetRow(
     id: Int,
     first_name: Option[String],
     last_name: Option[String]
-) derives SqlReadRow
+) derives SqlReadRow:
+
+  def fullName = s"""${first_name.getOrElse("")} ${last_name.getOrElse("")}"""

@@ -1,15 +1,15 @@
 package ba.sake.sharaf.petclinic.common
 
-case class Page[T](
+case class PageResponse[T](
     items: Seq[T],
     number: Int,
     totalElements: Int
 ) {
   private val totalPages: Int = (totalElements / Page.size) + 1
 
-  def map[A](function: T => A): Page[A] =
+  def map[A](function: T => A): PageResponse[A] =
     val mappedItems = items.map(function)
-    Page(mappedItems, number, totalElements)
+    PageResponse(mappedItems, number, totalElements)
 
   def hasItems: Boolean = items.nonEmpty
 
@@ -30,5 +30,5 @@ case class Page[T](
 object Page {
   val size: Int = 10
 
-  def empty[T] = Page[T](Seq.empty, 0, 0)
+  //def empty[T] = PageResponse(Seq.empty, 0, 0)
 }

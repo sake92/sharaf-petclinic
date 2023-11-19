@@ -5,8 +5,9 @@ import org.flywaydb.core.Flyway
 import ba.sake.sharaf.*
 import ba.sake.sharaf.routing.*
 import ba.sake.squery.SqueryContext
-import ba.sake.sharaf.petclinic.web.controllers.*
 import ba.sake.sharaf.petclinic.db.daos.*
+import ba.sake.sharaf.petclinic.services.VetService
+import ba.sake.sharaf.petclinic.web.controllers.*
 
 case class PetclinicModule(
     config: PetclinicConfig,
@@ -17,7 +18,7 @@ case class PetclinicModule(
 object PetclinicModule {
 
   def of(config: PetclinicConfig): PetclinicModule = {
-
+    // db
     val ds = com.zaxxer.hikari.HikariDataSource()
     ds.setJdbcUrl(config.db.jdbcUrl)
     ds.setUsername(config.db.username)
@@ -26,9 +27,14 @@ object PetclinicModule {
     val flyway = Flyway.configure().dataSource(ds).schemas("petclinic").load()
 
     val squeryContext = new SqueryContext(ds)
-    val vetDAO = VetDao(squeryContext)
+    val vetDao = VetDao(squeryContext)
+    val petDao = PetDao(squeryContext)
 
-    val controllers = Seq(WelcomeController(), VetController(vetDAO))
+    // services / domain
+    val vetService = VetService(vetDao)
+
+    // web
+    val controllers = Seq(WelcomeController(), VetController(vetService), PetController(petDao))
     val routes: Routes = Routes.merge(controllers.map(_.routes))
     val httpHandler = SharafHandler(routes)
 
