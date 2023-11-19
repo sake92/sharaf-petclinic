@@ -20,7 +20,7 @@ trait PetclinicPage extends Page {
         a(href := "/vets", cls := "nav-link")("Veterinarians") -> Seq.empty
       )
     ),
-    div(bootstrapContainer)(
+    div(cls := "container")(
       pageContent
     )
   )

@@ -5,7 +5,7 @@ case class PageResponse[T](
     number: Int,
     totalElements: Int
 ) {
-  private val totalPages: Int = (totalElements / Page.size) + 1
+  val totalPages: Int = (totalElements / Page.size) + 1
 
   def map[A](function: T => A): PageResponse[A] =
     val mappedItems = items.map(function)
@@ -17,18 +17,16 @@ case class PageResponse[T](
 
   def isLast: Boolean = number == totalPages - 1
 
-  def previousOrFirstPageable: PageRequest =
+  def prevPageReq: PageRequest =
     val prevOrFirst = if isFirst then 0 else (number - 1)
     PageRequest(prevOrFirst)
 
-  def nextOrLastPageable: PageRequest =
+  def nextPageReq: PageRequest =
     val nextOrLast = if isLast then number else (number + 1)
     PageRequest(nextOrLast)
 
 }
 
 object Page {
-  val size: Int = 10
-
-  //def empty[T] = PageResponse(Seq.empty, 0, 0)
+  val size: Int = 5
 }

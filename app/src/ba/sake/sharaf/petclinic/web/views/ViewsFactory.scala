@@ -6,7 +6,9 @@ import ba.sake.sharaf.petclinic.models.Vet
 
 object ViewsFactory {
 
-  def welcome: HtmlPage = WelcomePage()
+  def welcome: HtmlPage =
+    WelcomePage()
 
-  def vets(vetsPage: PageResponse[Vet]): HtmlPage = VetsPage(vetsPage)
+  def vets(vetsPageRes: PageResponse[Vet]): HtmlPage =
+    VetsPage(vetsPageRes)
 }
