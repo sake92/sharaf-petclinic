@@ -11,6 +11,7 @@ class OwnerService(ownerDao: OwnerDao) {
   def findByLastName(req: PageRequest, lastName: String): PageResponse[Owner] = {
     val rawPage = ownerDao.findByLastName(req, lastName)
     // group by owner.id, preserving sort order
+    // aka "poor-man's ORM"
     val resultsMap = mutable.LinkedHashMap.empty[Int, Seq[OwnerWithPetRow]].withDefaultValue(Seq.empty)
     rawPage.rows.map { row =>
       val vetId = row.o.id
