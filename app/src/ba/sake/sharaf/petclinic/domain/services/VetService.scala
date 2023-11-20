@@ -12,10 +12,11 @@ class VetService(vetDao: VetDao) {
 
     val rawPage = vetDao.findAll(req)
     // group by vet.id, preserving sort order
+    // aka "poor-man's ORM"
     val resultsMap = mutable.LinkedHashMap.empty[Int, Seq[VetWithSpecialtyRow]].withDefaultValue(Seq.empty)
-    rawPage.rows.map { vvs =>
-      val vetId = vvs.v.id
-      resultsMap(vetId) = resultsMap(vetId).appended(vvs)
+    rawPage.rows.map { row =>
+      val vetId = row.v.id
+      resultsMap(vetId) = resultsMap(vetId).appended(row)
     }
     val pageItems = resultsMap.map { case (k, rows) =>
       val vetRow = rows.head.v

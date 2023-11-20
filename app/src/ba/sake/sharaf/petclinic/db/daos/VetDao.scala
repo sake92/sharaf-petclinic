@@ -20,7 +20,6 @@ class VetDao(ctx: SqueryContext) {
 
   private def pageReqQuery(req: PageRequest): Query =
     sql"""
-      ORDER BY v.id DESC
       LIMIT ${req.limit}
       OFFSET ${req.offset}
     """

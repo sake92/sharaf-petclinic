@@ -1,7 +1,7 @@
 package ba.sake.sharaf.petclinic.db.daos
 
 import ba.sake.squery.*
-import ba.sake.sharaf.petclinic.db.models.*
+import ba.sake.sharaf.petclinic.db.models.pet.*
 
 class PetDao(ctx: SqueryContext) {
 

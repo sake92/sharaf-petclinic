@@ -7,9 +7,11 @@ import ba.sake.sharaf.utils.*
 @main def main: Unit = {
 
   val config = ConfigFactory.load().parse[PetclinicConfig]()
+
   val module = PetclinicModule.of(config)
 
   module.flyway.migrate()
+
   module.server.start()
   println(s"Started HTTP server at ${config.baseUrl}")
 }

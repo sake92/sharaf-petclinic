@@ -1,4 +1,4 @@
-package ba.sake.sharaf.petclinic.db.models
+package ba.sake.sharaf.petclinic.db.models.owner
 
 import ba.sake.squery.SqlReadRow
 
