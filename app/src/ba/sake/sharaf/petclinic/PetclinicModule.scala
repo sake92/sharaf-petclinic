@@ -6,7 +6,7 @@ import ba.sake.sharaf.*
 import ba.sake.sharaf.routing.*
 import ba.sake.squery.SqueryContext
 import ba.sake.sharaf.petclinic.db.daos.*
-import ba.sake.sharaf.petclinic.services.VetService
+import ba.sake.sharaf.petclinic.services.*
 import ba.sake.sharaf.petclinic.web.controllers.*
 
 case class PetclinicModule(
@@ -28,13 +28,16 @@ object PetclinicModule {
 
     val squeryContext = new SqueryContext(ds)
     val vetDao = VetDao(squeryContext)
+    val ownerDao = OwnerDao(squeryContext)
     val petDao = PetDao(squeryContext)
 
     // services / domain
     val vetService = VetService(vetDao)
+    val ownerService = OwnerService(ownerDao)
 
     // web
-    val controllers = Seq(WelcomeController(), VetController(vetService), PetController(petDao))
+    val controllers =
+      Seq(WelcomeController(), VetController(vetService), OwnerController(ownerService), PetController(petDao))
     val routes: Routes = Routes.merge(controllers.map(_.routes))
     val httpHandler = SharafHandler(routes)
 

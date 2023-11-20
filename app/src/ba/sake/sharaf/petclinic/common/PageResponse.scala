@@ -5,7 +5,8 @@ case class PageResponse[T](
     number: Int,
     totalElements: Int
 ) {
-  val totalPages: Int = (totalElements / Page.size) + 1
+  val totalPages: Int =
+    (totalElements.toDouble / Page.size).ceil.toInt
 
   def map[A](function: T => A): PageResponse[A] =
     val mappedItems = items.map(function)

@@ -20,7 +20,7 @@ class VetService(vetDao: VetDao) {
     val pageItems = resultsMap.map { case (k, rows) =>
       val vetRow = rows.head.v
       val specialties = rows.flatMap(_.s.flatMap(_.name))
-      Vet(vetRow.fullName, specialties)
+      Vet(vetRow.first_name.getOrElse(""), vetRow.last_name.getOrElse(""), specialties)
     }.toSeq
 
     PageResponse(pageItems, req.number, rawPage.total)

@@ -1,29 +1,31 @@
 package ba.sake.sharaf.petclinic.web.views
 
-import ba.sake.querson.toQueryString
+import ba.sake.querson.*
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.models.*
+import ba.sake.sharaf.petclinic.web.models.*
 import Bundle.*, Tags.*
 
-class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage {
+class OwnersPage(qp: SearchOwnerQP, ownersPageRes: PageResponse[Owner]) extends PetclinicPage {
 
   override def pageSettings = super.pageSettings
-    .withTitle("Veterinarians")
+    .withTitle("Owners")
 
   override def pageContent: Frag = div(
     table(Classes.tableClass, Classes.tableHoverable)(
       tr(th("Name"), th("Specialties")),
-      vetsPageRes.items.map { vet =>
+      ownersPageRes.items.map { owner =>
         tr(
-          td(vet.fullName),
-          td(vet.specialties.mkString(", "))
+          td(owner.fullName),
+          td(owner.id)
         )
       }
     ),
-    fragments.pager(vetsPageRes, getLink)
+    fragments.pager(ownersPageRes, getLink)
   )
 
   private def getLink(pr: PageRequest): String =
-    s"/vets?${pr.toQueryString()}"
+    val newQP = qp.copy(p = pr)
+    s"/owners?${newQP.toQueryString()}"
 
 }

@@ -8,6 +8,10 @@ case class PageRequest(number: Int = 0) derives QueryStringRW:
   def limit: Int = Page.size
 
 object PageRequest:
+
+  val first = PageRequest(0)
+
   given Validator[PageRequest] = Validator
     .derived[PageRequest]
     .and(_.number, _ >= 0, "must be >= 0")
+  
