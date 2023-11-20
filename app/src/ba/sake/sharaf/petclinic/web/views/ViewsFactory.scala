@@ -12,6 +12,9 @@ object ViewsFactory {
 
   def vets(vetsPageRes: PageResponse[Vet]): HtmlPage =
     VetsPage(vetsPageRes)
+
+  def findOwners(): HtmlPage =
+    FindOwnersPage()
   
   def owners(qp: SearchOwnerQP, ownersPageRes: PageResponse[Owner]): HtmlPage =
     OwnersPage(qp, ownersPageRes)

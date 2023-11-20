@@ -12,6 +12,7 @@ class OwnersPage(qp: SearchOwnerQP, ownersPageRes: PageResponse[Owner]) extends 
     .withTitle("Owners")
 
   override def pageContent: Frag = div(
+    h1("Owners"),
     table(Classes.tableClass, Classes.tableHoverable)(
       tr(th("Name"), th("Specialties")),
       ownersPageRes.items.map { owner =>
