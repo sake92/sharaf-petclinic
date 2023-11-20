@@ -1,10 +1,10 @@
-package ba.sake.sharaf.petclinic.services
+package ba.sake.sharaf.petclinic.domain.services
 
 import scala.collection.mutable
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.*
 import ba.sake.sharaf.petclinic.db.daos.VetDao
-import ba.sake.sharaf.petclinic.models.*
+import ba.sake.sharaf.petclinic.domain.models.*
 
 class VetService(vetDao: VetDao) {
 

@@ -1,4 +1,4 @@
-package ba.sake.sharaf.petclinic.models
+package ba.sake.sharaf.petclinic.domain.models
 
 case class Vet(
     firstName: String,

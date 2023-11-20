@@ -10,8 +10,8 @@ class FindOwnersPage() extends PetclinicPage {
   override def pageContent: Frag = div(
     h1("Find Owners"),
     Form.form(action := "/owners", method := "GET")(
-      Form.inputText(tpe := "search")("q", "Last Name"),
-      button(tpe := "submit", Classes.btnClass, Classes.btnPrimary)("Find Owner")
+      Form.inputText(tpe := "search", autofocus)("q", "Last Name"),
+      Form.inputButton(tpe := "submit", Classes.btnPrimary)("Find Owner")
     )
   )
 

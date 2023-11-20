@@ -1,8 +1,8 @@
-package ba.sake.sharaf.petclinic.services
+package ba.sake.sharaf.petclinic.domain.services
 
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.daos.OwnerDao
-import ba.sake.sharaf.petclinic.models.*
+import ba.sake.sharaf.petclinic.domain.models.*
 
 class OwnerService(ownerDao: OwnerDao) {
 
@@ -15,7 +15,8 @@ class OwnerService(ownerDao: OwnerDao) {
         o.last_name.getOrElse(""),
         o.address.getOrElse(""),
         o.city.getOrElse(""),
-        o.telephone.getOrElse("")
+        o.telephone.getOrElse(""),
+        Seq.empty
       )
     }
     PageResponse(pageItems, req.number, rawPage.total)

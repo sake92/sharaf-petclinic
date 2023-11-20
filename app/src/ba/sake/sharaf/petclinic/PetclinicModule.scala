@@ -6,7 +6,7 @@ import ba.sake.sharaf.*
 import ba.sake.sharaf.routing.*
 import ba.sake.squery.SqueryContext
 import ba.sake.sharaf.petclinic.db.daos.*
-import ba.sake.sharaf.petclinic.services.*
+import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.controllers.*
 
 case class PetclinicModule(

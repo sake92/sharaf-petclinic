@@ -5,7 +5,7 @@ import Bundle.Tags.*
 
 object fragments {
 
-  def pager[T](pageRes: PageResponse[T], getLink: PageRequest => String) = 
+  def pagination[T](pageRes: PageResponse[T], getLink: PageRequest => String) = 
     tag("nav")(
       ul(cls := "pagination")(
         li(

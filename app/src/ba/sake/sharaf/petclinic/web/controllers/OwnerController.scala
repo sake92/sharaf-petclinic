@@ -1,7 +1,7 @@
 package ba.sake.sharaf.petclinic.web.controllers
 
 import ba.sake.sharaf.*, routing.*
-import ba.sake.sharaf.petclinic.services.*
+import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.views.ViewsFactory
 import ba.sake.sharaf.petclinic.web.models.SearchOwnerQP
 

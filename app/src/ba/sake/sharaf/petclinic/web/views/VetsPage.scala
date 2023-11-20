@@ -2,7 +2,7 @@ package ba.sake.sharaf.petclinic.web.views
 
 import ba.sake.querson.toQueryString
 import ba.sake.sharaf.petclinic.common.*
-import ba.sake.sharaf.petclinic.models.*
+import ba.sake.sharaf.petclinic.domain.models.*
 import Bundle.*, Tags.*
 
 class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage {
@@ -21,7 +21,7 @@ class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage {
         )
       }
     ),
-    fragments.pager(vetsPageRes, getLink)
+    fragments.pagination(vetsPageRes, getLink)
   )
 
   private def getLink(pr: PageRequest): String =

@@ -2,7 +2,7 @@ package ba.sake.sharaf.petclinic.web.views
 
 import ba.sake.querson.*
 import ba.sake.sharaf.petclinic.common.*
-import ba.sake.sharaf.petclinic.models.*
+import ba.sake.sharaf.petclinic.domain.models.*
 import ba.sake.sharaf.petclinic.web.models.*
 import Bundle.*, Tags.*
 
@@ -14,15 +14,18 @@ class OwnersPage(qp: SearchOwnerQP, ownersPageRes: PageResponse[Owner]) extends 
   override def pageContent: Frag = div(
     h1("Owners"),
     table(Classes.tableClass, Classes.tableHoverable)(
-      tr(th("Name"), th("Specialties")),
+      tr(th("Name"), th("Address"), th("City"), th("Telephone"), th("Pets")),
       ownersPageRes.items.map { owner =>
         tr(
           td(owner.fullName),
-          td(owner.id)
+          td(owner.address),
+          td(owner.city),
+          td(owner.telephone),
+          td(owner.pets.mkString(", "))
         )
       }
     ),
-    fragments.pager(ownersPageRes, getLink)
+    fragments.pagination(ownersPageRes, getLink)
   )
 
   private def getLink(pr: PageRequest): String =

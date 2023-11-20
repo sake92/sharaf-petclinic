@@ -22,6 +22,7 @@ object app extends ScalaModule with ScalafmtModule {
 
   def ivyDeps = Agg(
     ivy"ba.sake::sharaf:0.0.13",
+    ivy"ba.sake::hepek-components:0.15.0+2-893fd286+20231120-1149-SNAPSHOT", // TODO remove when updated sharaf
     // db
     ivy"org.postgresql:postgresql:42.6.0",
     ivy"com.zaxxer:HikariCP:5.0.1",
