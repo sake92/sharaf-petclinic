@@ -18,7 +18,7 @@ case class Owner(
 }
 
 object Owner {
+
   def fromRow(row: OwnerRow, pets: Seq[Pet]): Owner =
     Owner(row.id, row.first_name, row.last_name, row.address, row.city, row.telephone, pets)
-
 }

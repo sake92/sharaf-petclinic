@@ -42,7 +42,8 @@ object PetclinicModule {
         WelcomeController(),
         VetController(vetService),
         OwnerController(ownerService),
-        PetController(ownerService, petService)
+        PetController(ownerService, petService),
+        VisitController(petService)
       )
     val routes: Routes = Routes.merge(controllers.map(_.routes))
     val httpHandler = SharafHandler(routes)

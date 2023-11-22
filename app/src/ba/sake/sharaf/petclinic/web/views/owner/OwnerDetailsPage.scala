@@ -34,19 +34,24 @@ class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
           td(pet.birthDate.toString),
           td(pet.petType.toString),
           td(
-            helpers.bsTableSecondary(
-              tr(th("Date"), th("Description")),
-              pet.visits.map { visit =>
-                tr(
-                  td(visit.date.toString()),
-                  td(visit.description)
-                )
-              }
-            )
+            if pet.visits.isEmpty then div("No visits yet", br)
+            else
+              helpers.bsTableSecondary(
+                tr(th("Date"), th("Description")),
+                pet.visits.map { visit =>
+                  tr(
+                    td(visit.date.toString()),
+                    td(visit.description)
+                  )
+                }
+              )
+            ,
+            a(href := s"/owners/${owner.id}/pets/${pet.id}/visits/new")("Add visit")
           )
         )
       }
-    )
+    ),
+    a(href := s"/owners/${owner.id}/pets/new")("Add Pet")
   )
 
 }

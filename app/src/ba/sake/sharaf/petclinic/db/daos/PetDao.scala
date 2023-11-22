@@ -44,4 +44,14 @@ class PetDao(ctx: SqueryContext) {
     """.readRowOpt[PetRow]()
   }
 
+  def insertVisit(petId: Int, v: VisitRow) = ctx.run {
+    sql"""
+      INSERT INTO visits(
+        pet_id, visit_date, description
+      )
+      VALUES (
+        ${petId}, ${v.visit_date}, ${v.description}
+      )
+    """.insert()
+  }
 }

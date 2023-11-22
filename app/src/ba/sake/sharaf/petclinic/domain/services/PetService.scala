@@ -23,4 +23,6 @@ class PetService(petDao: PetDao) {
       .find(_.name == petType)
       .getOrElse(throw NotFoundException(s"Pet type: ${petType}"))
 
+  def insertVisit(petId: Int, visit: Visit) =
+    petDao.insertVisit(petId, visit.toRow)
 }
