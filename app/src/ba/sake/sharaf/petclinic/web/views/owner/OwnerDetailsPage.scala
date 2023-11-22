@@ -13,7 +13,7 @@ class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
     h1("Owner details"),
     hr,
     h2("Basic info"),
-    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")(
+    helpers.bsTablePrimary(
       tr(th("Name"), th("Address"), th("City"), th("Telephone")),
       tr(
         td(owner.fullName),
@@ -25,14 +25,24 @@ class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
     a(href := s"/owners/${owner.id}/edit")("Edit Owner"),
     hr,
     h2("Pets"),
-    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")(
+    helpers.bsTablePrimary(
       tr(th("Name"), th("Birth Date"), th("Type"), th("Visits")),
       owner.pets.map { pet =>
         tr(
           td(pet.name),
           td(pet.birthDate.toString()),
           td(pet.petType),
-          td(pet.visits.toString)
+          td(
+            helpers.bsTableSecondary(
+              tr(th("Date"), th("Description")),
+              pet.visits.map { visit =>
+                tr(
+                  td(visit.date.toString()),
+                  td(visit.description)
+                )
+              }
+            )
+          )
         )
       }
     )

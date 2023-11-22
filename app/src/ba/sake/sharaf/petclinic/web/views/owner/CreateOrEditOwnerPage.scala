@@ -11,9 +11,9 @@ class CreateOrEditOwnerPage(
     errors: Seq[ValidationError]
 ) extends PetclinicPage {
 
-  private val (pageTitle, formAction) = ownerId match
-    case Some(ownerId) => ("Edit Owner", s"/owners/${ownerId}/edit")
-    case None          => ("Create Owner", "/owners/new")
+  private val (pageTitle, actionLabel, formAction) = ownerId match
+    case Some(ownerId) => ("Edit Owner", "Update", s"/owners/${ownerId}/edit")
+    case None          => ("Create Owner", "Create", "/owners/new")
 
   override def pageSettings = super.pageSettings
     .withTitle(pageTitle)
@@ -61,7 +61,8 @@ class CreateOrEditOwnerPage(
           _messages = messages
         )
       },
-      Form.inputButton(tpe := "submit", Classes.btnPrimary)("Add Owner")
+      br,
+      Form.inputButton(tpe := "submit", Classes.btnPrimary)(actionLabel)
     )
   )
 

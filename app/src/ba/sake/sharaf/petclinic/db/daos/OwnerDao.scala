@@ -49,6 +49,7 @@ class OwnerDao(ctx: SqueryContext) {
       WITH owners_slice AS (
         SELECT * from owners
         WHERE last_name ILIKE ${likeArg}
+        ORDER BY id ASC
         LIMIT ${req.limit}
         OFFSET ${req.offset}
       )

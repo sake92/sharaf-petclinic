@@ -14,7 +14,7 @@ class OwnersPage(qp: FindOwnerQP, ownersPageRes: PageResponse[Owner]) extends Pe
 
   override def pageContent: Frag = div(
     h1("Owners"),
-    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")(
+    helpers.bsTablePrimary(
       tr(th("Name"), th("Address"), th("City"), th("Telephone"), th("Pets")),
       ownersPageRes.items.map { owner =>
         tr(
