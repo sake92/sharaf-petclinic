@@ -12,7 +12,7 @@ class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage {
 
   override def pageContent: Frag = div(
     h1("Veterinarians"),
-    table(Classes.tableClass, Classes.tableHoverable)(
+    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")(
       tr(th("Name"), th("Specialties")),
       vetsPageRes.items.map { vet =>
         tr(

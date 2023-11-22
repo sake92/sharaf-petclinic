@@ -12,9 +12,13 @@ case class Owner(
     pets: Seq[Pet] = Seq.empty
 ) {
   def fullName = s"${firstName} ${lastName}"
+
+  def toRow: OwnerRow =
+    OwnerRow(id, firstName, lastName, address, city, telephone)
 }
 
 object Owner {
-  def fromRow(row: OwnerRow, pets: Seq[Pet]) =
+  def fromRow(row: OwnerRow, pets: Seq[Pet]): Owner =
     Owner(row.id, row.first_name, row.last_name, row.address, row.city, row.telephone, pets)
+
 }

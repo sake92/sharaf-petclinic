@@ -1,10 +1,7 @@
 package ba.sake.sharaf.petclinic.web.views
 package owner
 
-import ba.sake.querson.*
-import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.domain.models.*
-import ba.sake.sharaf.petclinic.web.models.*
 import Bundle.*, Tags.*
 
 class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
@@ -16,7 +13,7 @@ class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
     h1("Owner details"),
     hr,
     h2("Basic info"),
-    table(Classes.tableClass, Classes.tableHoverable)(
+    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")(
       tr(th("Name"), th("Address"), th("City"), th("Telephone")),
       tr(
         td(owner.fullName),
@@ -25,13 +22,16 @@ class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
         td(owner.telephone)
       )
     ),
+    a(href := s"/owners/${owner.id}/edit")("Edit Owner"),
     hr,
     h2("Pets"),
-    table(Classes.tableClass, Classes.tableHoverable)(
-      tr(th("Pet"), th("Visits")),
+    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")(
+      tr(th("Name"), th("Birth Date"), th("Type"), th("Visits")),
       owner.pets.map { pet =>
         tr(
           td(pet.name),
+          td(pet.birthDate.toString()),
+          td(pet.petType),
           td(pet.visits.toString)
         )
       }

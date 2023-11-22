@@ -2,6 +2,7 @@ package ba.sake.sharaf.petclinic.web.models
 
 import ba.sake.formson.FormDataRW
 import ba.sake.validson.Validator
+import ba.sake.sharaf.petclinic.domain.models.Owner
 
 // create/edit owner form data
 case class UpsertOwnerForm(
@@ -15,6 +16,9 @@ case class UpsertOwnerForm(
 object UpsertOwnerForm:
 
   val empty = UpsertOwnerForm("", "", "", "", "")
+
+  def fromOwner(o: Owner): UpsertOwnerForm =
+    UpsertOwnerForm(o.firstName, o.lastName, o.address, o.city, o.telephone)
 
   given Validator[UpsertOwnerForm] = Validator
     .derived[UpsertOwnerForm]

@@ -21,7 +21,7 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
 
     case GET() -> Path("owners", param[Int](ownerId)) =>
       val ownerOpt = ownerService.findById(ownerId)
-      val htmlPageOpt = ownerOpt.map(o => ViewsFactory.ownerDetails(o))
+      val htmlPageOpt = ownerOpt.map(ViewsFactory.ownerDetails)
       Response.withBodyOpt(htmlPageOpt, "Owner")
 
     case GET() -> Path("owners", "new") =>
@@ -40,7 +40,34 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
           val htmlPage = ViewsFactory.newOwner(formData, errors)
           Response.withBody(htmlPage).withStatus(400)
 
-  //  case GET() -> Path("owners", param[Int](ownerId), "edit") =>
-  //  Response.withBody(ViewsFactory.editOwner())
+    case GET() -> Path("owners", param[Int](ownerId), "edit") =>
+      val ownerOpt = ownerService.findById(ownerId)
+      val htmlPageOpt = ownerOpt.map { owner =>
+        val formData = UpsertOwnerForm.fromOwner(owner)
+        ViewsFactory.editOwner(owner.id, formData, Seq.empty)
+      }
+      Response.withBodyOpt(htmlPageOpt, "Owner")
+
+    case POST() -> Path("owners", param[Int](ownerId), "edit") =>
+      val ownerOpt = ownerService.findById(ownerId)
+      ownerOpt match
+        case Some(owner) =>
+          val formData = Request.current.bodyForm[UpsertOwnerForm]
+          formData.validate match
+            case Seq() =>
+              val updatedOwner = owner.copy(
+                firstName = formData.firstName,
+                lastName = formData.lastName,
+                address = formData.address,
+                city = formData.city,
+                telephone = formData.telephone
+              )
+              ownerService.update(updatedOwner)
+              Response.redirect(s"/owners/${owner.id}")
+            case errors =>
+              val htmlPage = ViewsFactory.editOwner(owner.id, formData, errors)
+              Response.withBody(htmlPage).withStatus(400)
+        case None =>
+          Response.withStatus(404)
 
 }

@@ -12,8 +12,10 @@ class FindOwnersPage() extends PetclinicPage {
     h1("Find Owners"),
     Form.form(action := "/owners", method := "GET")(
       Form.inputText(tpe := "search", autofocus)("q", "Last Name"),
+      br,
       Form.inputButton(tpe := "submit", Classes.btnPrimary)("Find Owner")
     ),
+    hr,
     a(href := "/owners/new", Classes.btnClass, Classes.btnLink)("Add Owner")
   )
 
