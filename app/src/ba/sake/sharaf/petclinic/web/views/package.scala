@@ -11,5 +11,6 @@ object helpers {
   import Tags.*
 
   val bsTablePrimary = table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-primary")
-  val bsTableSecondary = table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-secondary table-sm")
+  val bsTableSecondary =
+    table(Classes.tableClass, Classes.tableHoverable, Classes.tableStriped, cls := "table-secondary table-sm")
 }

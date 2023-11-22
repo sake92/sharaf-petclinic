@@ -34,10 +34,16 @@ object PetclinicModule {
     // services / domain
     val vetService = VetService(vetDao)
     val ownerService = OwnerService(ownerDao)
+    val petService = PetService(petDao)
 
     // web
     val controllers =
-      Seq(WelcomeController(), VetController(vetService), OwnerController(ownerService), PetController(petDao))
+      Seq(
+        WelcomeController(),
+        VetController(vetService),
+        OwnerController(ownerService),
+        PetController(ownerService, petService)
+      )
     val routes: Routes = Routes.merge(controllers.map(_.routes))
     val httpHandler = SharafHandler(routes)
 

@@ -21,13 +21,12 @@ object app extends ScalaModule with ScalafmtModule {
   )
 
   def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.0.13",
-    ivy"ba.sake::hepek-components:0.15.0+2-893fd286+20231120-1149-SNAPSHOT", // TODO remove when updated sharaf
+    ivy"ba.sake::sharaf:0.0.13-2-95cb36-DIRTY38b843f-SNAPSHOT",
     // db
     ivy"org.postgresql:postgresql:42.6.0",
     ivy"com.zaxxer:HikariCP:5.0.1",
     ivy"org.flywaydb:flyway-core:8.5.5",
-    ivy"ba.sake::squery:0.0.11-1-d52196-SNAPSHOT",
+    ivy"ba.sake::squery:0.0.11-1-d52196-DIRTY8a8356bb-SNAPSHOT",
     // other
     ivy"ch.qos.logback:logback-classic:1.4.6"
   )

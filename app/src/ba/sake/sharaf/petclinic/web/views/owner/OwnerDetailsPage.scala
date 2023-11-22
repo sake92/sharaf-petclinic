@@ -26,12 +26,13 @@ class OwnerDetailsPage(owner: Owner) extends PetclinicPage {
     hr,
     h2("Pets"),
     helpers.bsTablePrimary(
-      tr(th("Name"), th("Birth Date"), th("Type"), th("Visits")),
+      tr(th( /*actions*/ ), th("Name"), th("Birth Date"), th("Type"), th("Visits")),
       owner.pets.map { pet =>
         tr(
+          td(a(href := s"/owners/${owner.id}/pets/${pet.id}/edit")("Edit")),
           td(pet.name),
-          td(pet.birthDate.toString()),
-          td(pet.petType),
+          td(pet.birthDate.toString),
+          td(pet.petType.toString),
           td(
             helpers.bsTableSecondary(
               tr(th("Date"), th("Description")),

@@ -33,7 +33,7 @@ class OwnerDao(ctx: SqueryContext) {
   def findById(id: Int): Seq[OwnerPetVisitRow] = ctx.run {
     sql"""
       SELECT  o.id, o.first_name, o.last_name, o.address, o.city, o.telephone,
-              p.id, p.name, p.birth_date, t.name AS petType,
+              p.id, p.name, p.birth_date, t.name AS "p.pet_type",
               v.id, v.visit_date, v.description
       FROM owners o
       LEFT JOIN pets p ON p.owner_id = o.id
@@ -54,9 +54,10 @@ class OwnerDao(ctx: SqueryContext) {
         OFFSET ${req.offset}
       )
       SELECT o.id, o.first_name, o.last_name, o.address, o.city, o.telephone,
-              p.id, p.name, p.birth_date
+              p.id, p.name, p.birth_date, t.name AS "p.pet_type"
       FROM owners_slice o
       LEFT JOIN pets p ON p.owner_id = o.id
+      LEFT JOIN types t ON t.id = p.type_id
     """
     val items = query.readRows[OwnerWithPetRow]()
     val total = sql"SELECT COUNT(*) FROM owners WHERE last_name ILIKE ${likeArg}".readValue[Int]()

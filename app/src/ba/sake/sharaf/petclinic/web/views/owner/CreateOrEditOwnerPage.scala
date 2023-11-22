@@ -12,14 +12,14 @@ class CreateOrEditOwnerPage(
 ) extends PetclinicPage {
 
   private val (pageTitle, actionLabel, formAction) = ownerId match
-    case Some(ownerId) => ("Edit Owner", "Update", s"/owners/${ownerId}/edit")
-    case None          => ("Create Owner", "Create", "/owners/new")
+    case Some(id) => ("Edit Owner", "Update", s"/owners/${id}/edit")
+    case None     => ("Create Owner", "Create", "/owners/new")
 
   override def pageSettings = super.pageSettings
     .withTitle(pageTitle)
 
   override def pageContent: Frag = div(
-    h1("Find Owners"),
+    h1(pageTitle),
     Form.form(action := formAction, method := "POST")(
       withValueAndValidation("firstName", _.firstName) { case (fieldName, fieldValue, state, messages) =>
         Form.inputText(autofocus, value := fieldValue)(

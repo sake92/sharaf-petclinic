@@ -30,4 +30,10 @@ object ViewsFactory {
   def editOwner(ownerId: Int, formData: UpsertOwnerForm, errors: Seq[ValidationError]): HtmlPage =
     CreateOrEditOwnerPage(Some(ownerId), formData, errors)
 
+  def newPet(ownerId: Int, formData: UpsertPetForm, errors: Seq[ValidationError]): HtmlPage =
+    CreateOrEditPetPage(ownerId, None, formData, errors)
+
+  def editPet(ownerId: Int, petId: Int, formData: UpsertPetForm, errors: Seq[ValidationError]): HtmlPage =
+    CreateOrEditPetPage(ownerId, Some(petId), formData, errors)
+
 }

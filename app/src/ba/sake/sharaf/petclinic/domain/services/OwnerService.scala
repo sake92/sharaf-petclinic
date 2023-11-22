@@ -10,13 +10,11 @@ import ba.sake.sharaf.petclinic.domain.models.*
 class OwnerService(ownerDao: OwnerDao) {
 
   def insert(owner: Owner): Owner =
-    var ownerRow = owner.toRow
-    ownerRow = ownerDao.insert(ownerRow) // new id assigned :)
+    val ownerRow = ownerDao.insert(owner.toRow) // new id assigned :)
     owner.copy(id = ownerRow.id)
 
   def update(owner: Owner): Unit =
-    val ownerRow = owner.toRow
-    ownerDao.update(ownerRow)
+    ownerDao.update(owner.toRow)
 
   def findById(id: Int): Option[Owner] = {
     val rawRows = ownerDao.findById(id)
@@ -26,22 +24,22 @@ class OwnerService(ownerDao: OwnerDao) {
 
       // group by pet.id, preserving sort order
       // aka "poor-man's ORM"
-      val petsMap = mutable.LinkedHashMap.empty[Int, (PetRow, String, Seq[OwnerPetVisitRow])]
+      val petsMap = mutable.LinkedHashMap.empty[Int, (PetRow, Seq[OwnerPetVisitRow])]
       rawRows.foreach { row =>
-        (row.p.zip(row.petType)).foreach { case (petRow, petType) =>
+        row.p.foreach { petRow =>
           val petId = petRow.id
-          val (_, _, petRows) = petsMap.getOrElse(petId, (petRow, petType, Seq.empty))
-          petsMap(petId) = (petRow, petType, petRows.appended(row))
+          val (_, petRows) = petsMap.getOrElse(petId, (petRow, Seq.empty))
+          petsMap(petId) = (petRow, petRows.appended(row))
         }
       }
 
-      val pets = petsMap.map { case (petId, (petRow, petType, rows)) =>
+      val pets = petsMap.map { case (petId, (petRow, rows)) =>
         val visits = rows.flatMap { row =>
           row.v.map { visitRow =>
             Visit(visitRow.visit_date, visitRow.description)
           }
         }
-        Pet.fromRow(petRow, petType, visits)
+        Pet.fromRow(petRow, visits)
       }
 
       Some(Owner.fromRow(ownerRow, pets.toSeq))
@@ -59,7 +57,7 @@ class OwnerService(ownerDao: OwnerDao) {
     }
     val pageItems = resultsMap.map { case (_, rows) =>
       val ownerRow = rows.head.o
-      val pets = rows.flatMap(_.p).map(pr => Pet.fromRow(pr, "", Seq.empty))
+      val pets = rows.flatMap(_.p).map(pr => Pet.fromRow(pr, Seq.empty))
       Owner.fromRow(ownerRow, pets)
     }.toSeq
 
