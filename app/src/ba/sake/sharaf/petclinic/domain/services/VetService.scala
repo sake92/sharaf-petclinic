@@ -14,14 +14,14 @@ class VetService(vetDao: VetDao) {
     // group by vet.id, preserving sort order
     // aka "poor-man's ORM"
     val resultsMap = mutable.LinkedHashMap.empty[Int, Seq[VetWithSpecialtyRow]].withDefaultValue(Seq.empty)
-    rawPage.rows.map { row =>
+    rawPage.rows.foreach { row =>
       val vetId = row.v.id
       resultsMap(vetId) = resultsMap(vetId).appended(row)
     }
     val pageItems = resultsMap.map { case (k, rows) =>
       val vetRow = rows.head.v
       val specialties = rows.flatMap(_.s.flatMap(_.name))
-      Vet(vetRow.first_name.getOrElse(""), vetRow.last_name.getOrElse(""), specialties)
+      Vet(vetRow.first_name, vetRow.last_name, specialties)
     }.toSeq
 
     PageResponse(pageItems, req.number, rawPage.total)

@@ -6,23 +6,46 @@ import ba.sake.sharaf.petclinic.db.models.*, owner.*
 
 class OwnerDao(ctx: SqueryContext) {
 
+  def insert(o: OwnerRow) = ctx.run {
+    sql"""
+      INSERT INTO owners(
+        first_name, last_name, address, city, telephone
+      ) VALUES (
+        ${o.first_name}, ${o.last_name}, ${o.address}, ${o.city}, ${o.telephone}
+      ) RETURNING id, first_name, last_name, address, city, telephone
+    """.insertReturningRow[OwnerRow]()
+  }
+
+  def findById(id: Int): Seq[OwnerPetVisitRow] = ctx.run {
+    sql"""
+      SELECT o.id, o.first_name, o.last_name, o.address, o.city, o.telephone,
+              p.id, p.name, p.birth_date, t.name AS petType,
+              v.id, v.visit_date, v.description
+      FROM owners o
+      LEFT JOIN pets p ON p.owner_id = o.id
+      LEFT JOIN types t ON t.id = p.type_id
+      LEFT JOIN visits v ON v.pet_id = p.id
+      WHERE o.id = ${id}
+    """.readRows()
+  }
+
   def findByLastName(req: PageRequest, lastName: String): PageResultRows[OwnerWithPetRow] = ctx.run {
     val likeArg = s"${lastName}%"
     val query = sql"""
+      WITH owners_slice AS (
+        SELECT * from owners
+        LIMIT ${req.limit}
+        OFFSET ${req.offset}
+      )
       SELECT o.id, o.first_name, o.last_name, o.address, o.city, o.telephone,
               p.id, p.name, p.birth_date
-      FROM owners o
+      FROM owners_slice o
       LEFT JOIN pets p ON p.owner_id = o.id
       WHERE last_name ILIKE ${likeArg}
-    """ ++ pageReqQuery(req)
+    """
     val items = query.readRows[OwnerWithPetRow]()
     val total = sql"SELECT COUNT(*) FROM owners WHERE last_name ILIKE ${likeArg}".readValue[Int]()
     PageResultRows(items, total)
   }
 
-  private def pageReqQuery(req: PageRequest): Query =
-    sql"""
-      LIMIT ${req.limit}
-      OFFSET ${req.offset}
-    """
 }

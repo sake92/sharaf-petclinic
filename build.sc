@@ -27,7 +27,7 @@ object app extends ScalaModule with ScalafmtModule {
     ivy"org.postgresql:postgresql:42.6.0",
     ivy"com.zaxxer:HikariCP:5.0.1",
     ivy"org.flywaydb:flyway-core:8.5.5",
-    ivy"ba.sake::squery:0.0.11",
+    ivy"ba.sake::squery:0.0.11-1-d52196-SNAPSHOT",
     // other
     ivy"ch.qos.logback:logback-classic:1.4.6"
   )

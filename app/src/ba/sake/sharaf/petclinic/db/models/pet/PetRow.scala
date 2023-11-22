@@ -5,6 +5,6 @@ import ba.sake.squery.SqlReadRow
 
 case class PetRow(
     id: Int,
-    name: Option[String],
-    birth_date: Option[LocalDate]
+    name: String,
+    birth_date: LocalDate
 ) derives SqlReadRow

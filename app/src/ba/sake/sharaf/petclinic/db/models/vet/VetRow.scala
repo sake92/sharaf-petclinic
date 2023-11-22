@@ -4,6 +4,6 @@ import ba.sake.squery.SqlReadRow
 
 case class VetRow(
     id: Int,
-    first_name: Option[String],
-    last_name: Option[String]
+    first_name: String,
+    last_name: String
 ) derives SqlReadRow

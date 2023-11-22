@@ -9,7 +9,6 @@ class PetController(petDao: PetDao) extends PetclinicController {
   override def routes = Routes:
     case GET() -> Path("pets", param[Int](id)) =>
       val res = petDao.findById(id, 1)
-      println(res)
       Response.withBody(ViewsFactory.welcome)
 
 }

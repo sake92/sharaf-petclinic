@@ -4,5 +4,5 @@ import ba.sake.squery.SqlReadRow
 
 case class PetTypeRow(
     id: Int,
-    name: Option[String]
+    name: String
 ) derives SqlReadRow

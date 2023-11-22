@@ -4,9 +4,9 @@ import ba.sake.squery.SqlReadRow
 
 case class OwnerRow(
     id: Int,
-    first_name: Option[String],
-    last_name: Option[String],
-    address: Option[String],
-    city: Option[String],
-    telephone: Option[String]
+    first_name: String,
+    last_name: String,
+    address: String,
+    city: String,
+    telephone: String
 ) derives SqlReadRow
