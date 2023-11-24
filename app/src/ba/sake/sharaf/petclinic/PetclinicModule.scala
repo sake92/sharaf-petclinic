@@ -1,16 +1,16 @@
 package ba.sake.sharaf.petclinic
 
 import io.undertow.Undertow
+import io.undertow.util.StatusCodes
 import org.flywaydb.core.Flyway
+import ba.sake.squery.SqueryContext
 import ba.sake.sharaf.*
 import ba.sake.sharaf.routing.*
 import ba.sake.sharaf.handlers.ErrorMapper
-import ba.sake.squery.SqueryContext
 import ba.sake.sharaf.petclinic.db.daos.*
 import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.controllers.*
 import ba.sake.sharaf.petclinic.web.views.ViewsFactory
-import io.undertow.util.StatusCodes
 
 case class PetclinicModule(
     config: PetclinicConfig,
