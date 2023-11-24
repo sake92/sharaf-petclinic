@@ -13,7 +13,7 @@ docker compose up -d
 ./mill app.run
 ```
 
-Then you can go to 
+Then go to http://localhost:9001
 
 ## Test
 
