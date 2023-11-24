@@ -17,7 +17,10 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
     case GET() -> Path("owners") =>
       val qp = Request.current.queryParamsValidated[FindOwnerQP]
       val pageRes = ownerService.findByLastName(qp.p, qp.q.getOrElse(""))
-      Response.withBody(ViewsFactory.owners(qp, pageRes))
+      if pageRes.items.size == 1 then
+        val owner = pageRes.items.head
+        Response.redirect(s"/owners/${owner.id}")
+      else Response.withBody(ViewsFactory.owners(qp, pageRes))
 
     case GET() -> Path("owners", param[Int](ownerId)) =>
       val ownerOpt = ownerService.findById(ownerId)

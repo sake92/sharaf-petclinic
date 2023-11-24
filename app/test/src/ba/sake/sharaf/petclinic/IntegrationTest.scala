@@ -4,12 +4,10 @@ import scala.jdk.CollectionConverters.*
 import org.testcontainers.containers.PostgreSQLContainer
 import com.typesafe.config.ConfigFactory
 import ba.sake.sharaf.utils.*
-import java.util.UUID
-import requests.Session
 
 trait IntegrationTest extends munit.FunSuite {
 
-  protected val moduleFixture = new Fixture[PetclinicModule]("PetclinicModule") {
+  protected val itFixture = new Fixture[PetclinicModule]("PetclinicModule") {
 
     private var pgContainer: PostgreSQLContainer[?] = _
 
@@ -45,5 +43,5 @@ trait IntegrationTest extends munit.FunSuite {
       pgContainer.stop()
   }
 
-  override def munitFixtures = List(moduleFixture)
+  override def munitFixtures = List(itFixture)
 }
