@@ -1,6 +1,5 @@
 package ba.sake.sharaf.petclinic
 
-import scala.jdk.CollectionConverters.*
 import org.testcontainers.containers.PostgreSQLContainer
 import com.typesafe.config.ConfigFactory
 import ba.sake.sharaf.utils.*
