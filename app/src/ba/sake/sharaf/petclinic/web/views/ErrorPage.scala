@@ -5,7 +5,7 @@ import Bundle.*, Tags.*
 class ErrorPage(message: String) extends PetclinicPage {
 
   override def pageSettings = super.pageSettings
-    .withTitle("Welcome!")
+    .withTitle("An error happened :/")
 
   // you shouldn't do this in a real app,
   // you shouldn't leak (all) exception stacktraces
