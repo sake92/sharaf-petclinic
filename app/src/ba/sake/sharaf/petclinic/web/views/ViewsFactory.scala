@@ -12,6 +12,9 @@ object ViewsFactory {
   def welcome: HtmlPage =
     WelcomePage()
 
+  def errorPage(message: String): HtmlPage =
+    ErrorPage(message)
+
   def vets(vetsPageRes: PageResponse[Vet]): HtmlPage =
     VetsPage(vetsPageRes)
 

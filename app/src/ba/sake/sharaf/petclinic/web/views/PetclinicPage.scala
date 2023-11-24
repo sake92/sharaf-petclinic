@@ -17,7 +17,8 @@ trait PetclinicPage extends Page {
       brandName = Some("PetClinic"),
       left = Seq(
         a(href := "/owners/find", cls := "nav-link")("Find Owners") -> Seq.empty,
-        a(href := "/vets", cls := "nav-link")("Veterinarians") -> Seq.empty
+        a(href := "/vets", cls := "nav-link")("Veterinarians") -> Seq.empty,
+        a(href := "/oups", cls := "nav-link")("Error") -> Seq.empty
       )
     ),
     div(cls := "container")(
