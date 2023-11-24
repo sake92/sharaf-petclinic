@@ -10,6 +10,7 @@ import ba.sake.sharaf.petclinic.db.daos.*
 import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.controllers.*
 import ba.sake.sharaf.petclinic.web.views.ViewsFactory
+import io.undertow.util.StatusCodes
 
 case class PetclinicModule(
     config: PetclinicConfig,
@@ -51,12 +52,15 @@ object PetclinicModule {
     val routes: Routes = Routes.merge(controllers.map(_.routes))
 
     val customErrorMapper: ErrorMapper = { case e: RuntimeException =>
-      val errorPage = ViewsFactory.errorPage(e.getMessage())
-      Response.withBody(errorPage).withStatus(500)
+      val errorPage = ViewsFactory.error(e.getMessage())
+      Response.withBody(errorPage).withStatus(StatusCodes.INTERNAL_SERVER_ERROR)
     }
-    val httpHandler = SharafHandler(routes).withErrorMapper(
-      customErrorMapper.orElse(ErrorMapper.default)
-    )
+    val httpHandler = SharafHandler(routes)
+      .withErrorMapper(customErrorMapper.orElse(ErrorMapper.default))
+      .withNotFoundHandler { _ =>
+        val errorPage = ViewsFactory.notFound
+        Response.withBody(errorPage).withStatus(StatusCodes.NOT_FOUND)
+      }
 
     val server = Undertow
       .builder()
