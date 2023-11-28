@@ -1,6 +1,6 @@
 package ba.sake.sharaf.petclinic.domain.services
 
-import scala.collection.mutable
+import ba.sake.squery.utils.*
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.owner.*
 import ba.sake.sharaf.petclinic.db.models.pet.*
@@ -18,46 +18,28 @@ class OwnerService(ownerDao: OwnerDao) {
 
   def findById(id: Int): Option[Owner] = {
     val rawRows = ownerDao.findById(id)
-    if rawRows.isEmpty then None
-    else {
-      val ownerRow = rawRows.head.o
+    rawRows.headOption.map { firstRow =>
 
-      // group by pet.id, preserving sort order
-      // aka "poor-man's ORM"
-      val petsMap = mutable.LinkedHashMap.empty[Int, (PetRow, Seq[OwnerPetVisitRow])]
-      rawRows.foreach { row =>
-        row.p.foreach { petRow =>
-          val petId = petRow.id
-          val (_, petRows) = petsMap.getOrElse(petId, (petRow, Seq.empty))
-          petsMap(petId) = (petRow, petRows.appended(row))
-        }
-      }
-
-      val pets = petsMap.map { case (petId, (petRow, rows)) =>
-        val visits = rows.flatMap { row =>
-          row.v.map { visitRow =>
-            Visit(visitRow.visit_date, visitRow.description)
-          }
-        }
+      val petsMap = rawRows.groupByOrderedOpt(r => r.p.map(pet => (pet.id, pet)))
+      val pets = petsMap.map { case (petId, (petRow, petRows)) =>
+        val visits = for
+          row <- petRows
+          visitRow <- row.v
+        yield Visit(visitRow.visit_date, visitRow.description)
         Pet.fromRow(petRow, visits)
       }
 
-      Some(Owner.fromRow(ownerRow, pets.toSeq))
+      val ownerRow = firstRow.o
+      Owner.fromRow(ownerRow, pets.toSeq)
     }
   }
 
   def findByLastName(req: PageRequest, lastName: String): PageResponse[Owner] = {
     val rawPage = ownerDao.findByLastName(req, lastName)
-    // group by owner.id, preserving sort order
-    // aka "poor-man's ORM"
-    val resultsMap = mutable.LinkedHashMap.empty[Int, Seq[OwnerWithPetRow]].withDefaultValue(Seq.empty)
-    rawPage.rows.foreach { row =>
-      val ownerId = row.o.id
-      resultsMap(ownerId) = resultsMap(ownerId).appended(row)
-    }
-    val pageItems = resultsMap.map { case (_, rows) =>
-      val ownerRow = rows.head.o
-      val pets = rows.flatMap(_.p).map(pr => Pet.fromRow(pr, Seq.empty))
+
+    val ownersMap = rawPage.rows.groupByOrdered(r => (r.o.id, r.o))
+    val pageItems = ownersMap.map { case (_, (ownerRow, ownerRows)) =>
+      val pets = ownerRows.flatMap(_.p).map(pr => Pet.fromRow(pr, Seq.empty))
       Owner.fromRow(ownerRow, pets)
     }.toSeq
 

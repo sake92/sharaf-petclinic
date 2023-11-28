@@ -1,6 +1,6 @@
 package ba.sake.sharaf.petclinic.domain.services
 
-import scala.collection.mutable
+import ba.sake.squery.utils.*
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.vet.*
 import ba.sake.sharaf.petclinic.db.daos.VetDao
@@ -11,15 +11,8 @@ class VetService(vetDao: VetDao) {
   def findAll(req: PageRequest): PageResponse[Vet] = {
 
     val rawPage = vetDao.findAll(req)
-    // group by vet.id, preserving sort order
-    // aka "poor-man's ORM"
-    val resultsMap = mutable.LinkedHashMap.empty[Int, Seq[VetWithSpecialtyRow]].withDefaultValue(Seq.empty)
-    rawPage.rows.foreach { row =>
-      val vetId = row.v.id
-      resultsMap(vetId) = resultsMap(vetId).appended(row)
-    }
-    val pageItems = resultsMap.map { case (k, rows) =>
-      val vetRow = rows.head.v
+    val resultsMap = rawPage.rows.groupByOrdered(r => (r.v.id, r.v))
+    val pageItems = resultsMap.map { case (k, (vetRow, rows)) =>
       val specialties = rows.flatMap(_.s.flatMap(_.name))
       Vet(vetRow.first_name, vetRow.last_name, specialties)
     }.toSeq
