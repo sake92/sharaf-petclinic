@@ -11,9 +11,9 @@ class VetService(vetDao: VetDao) {
   def findAll(req: PageRequest): PageResponse[Vet] = {
 
     val rawPage = vetDao.findAll(req)
-    val resultsMap = rawPage.rows.groupByOrdered(r => (r.v.id, r.v))
-    val pageItems = resultsMap.map { case (k, (vetRow, rows)) =>
-      val specialties = rows.flatMap(_.s.flatMap(_.name))
+    val resultsMap = rawPage.rows.groupByOrdered(_.v, _.s)
+    val pageItems = resultsMap.map { case (vetRow, specRows) =>
+      val specialties = specRows.flatMap(_.flatMap(_.name))
       Vet(vetRow.first_name, vetRow.last_name, specialties)
     }.toSeq
 

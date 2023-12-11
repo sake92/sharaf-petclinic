@@ -6,11 +6,6 @@ object app extends ScalaModule with ScalafmtModule {
 
   def mainClass = T(Some("ba.sake.sharaf.petclinic.main"))
 
-  // TODO remove
-  def repositoriesTask = T.task {
-    super.repositoriesTask() ++ Seq(MavenRepository("https://oss.sonatype.org/content/repositories/snapshots"))
-  }
-
   def scalaVersion = "3.3.1"
 
   def scalacOptions = super.scalacOptions() ++ Seq(
@@ -21,9 +16,9 @@ object app extends ScalaModule with ScalafmtModule {
   )
 
   def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.0.15",
+    ivy"ba.sake::sharaf:0.0.15-8-65e624-SNAPSHOT",
     // db
-    ivy"ba.sake::squery:0.0.14-3-a7c97e-SNAPSHOT",
+    ivy"ba.sake::squery:0.0.16",
     ivy"org.flywaydb:flyway-core:8.5.5",
     ivy"com.zaxxer:HikariCP:5.0.1",
     ivy"org.postgresql:postgresql:42.6.0",

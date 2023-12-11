@@ -18,28 +18,22 @@ class OwnerService(ownerDao: OwnerDao) {
 
   def findById(id: Int): Option[Owner] = {
     val rawRows = ownerDao.findById(id)
-    rawRows.headOption.map { firstRow =>
-
-      val petsMap = rawRows.groupByOrderedOpt(r => r.p.map(pet => (pet.id, pet)))
-      val pets = petsMap.map { case (petId, (petRow, petRows)) =>
-        val visits = for
-          row <- petRows
-          visitRow <- row.v
-        yield Visit(visitRow.visit_date, visitRow.description)
+    val ownersMap = rawRows.groupByOrderedOpt(_.o, r => (r.p.map(_ -> r.v)))
+    ownersMap.map { case (ownerRow, petAndVisitRows) =>
+      val petsMap = petAndVisitRows.groupByOrderedOpt(_._1, _._2)
+      val pets = petsMap.map { case (petRow, visitRows) =>
+        val visits = visitRows.map(Visit.fromRow)
         Pet.fromRow(petRow, visits)
       }
-
-      val ownerRow = firstRow.o
       Owner.fromRow(ownerRow, pets.toSeq)
-    }
+    }.headOption
   }
 
   def findByLastName(req: PageRequest, lastName: String): PageResponse[Owner] = {
     val rawPage = ownerDao.findByLastName(req, lastName)
-
-    val ownersMap = rawPage.rows.groupByOrdered(r => (r.o.id, r.o))
-    val pageItems = ownersMap.map { case (_, (ownerRow, ownerRows)) =>
-      val pets = ownerRows.flatMap(_.p).map(pr => Pet.fromRow(pr, Seq.empty))
+    val ownersMap = rawPage.rows.groupByOrdered(_.o, _.p)
+    val pageItems = ownersMap.map { case (ownerRow, petRows) =>
+      val pets = petRows.flatten.map(pr => Pet.fromRow(pr, Seq.empty))
       Owner.fromRow(ownerRow, pets)
     }.toSeq
 
