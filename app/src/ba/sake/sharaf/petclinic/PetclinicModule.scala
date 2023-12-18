@@ -20,7 +20,7 @@ case class PetclinicModule(
 
 object PetclinicModule {
 
-  def of(config: PetclinicConfig): PetclinicModule = {
+  def apply(config: PetclinicConfig): PetclinicModule = {
     // db
     val ds = com.zaxxer.hikari.HikariDataSource()
     ds.setJdbcUrl(config.db.jdbcUrl)
@@ -29,7 +29,7 @@ object PetclinicModule {
 
     val flyway = Flyway.configure().dataSource(ds).schemas("petclinic").load()
 
-    val squeryContext = new SqueryContext(ds)
+    val squeryContext = SqueryContext(ds)
     val vetDao = VetDao(squeryContext)
     val ownerDao = OwnerDao(squeryContext)
     val petDao = PetDao(squeryContext)
