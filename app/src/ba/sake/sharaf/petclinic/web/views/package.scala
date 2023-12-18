@@ -3,7 +3,7 @@ package ba.sake.sharaf.petclinic.web.views
 import ba.sake.hepek.bootstrap5.BootstrapBundle
 import ba.sake.sharaf.petclinic.common.*
 
-val Bundle: BootstrapBundle = BootstrapBundle()
+val Bundle: BootstrapBundle = BootstrapBundle.default
 
 object helpers {
   // scala complains if these are top-level

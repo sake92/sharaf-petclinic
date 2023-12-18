@@ -2,11 +2,11 @@ package ba.sake.sharaf.petclinic
 
 import com.typesafe.config.ConfigFactory
 import ba.sake.sharaf.*
-import ba.sake.sharaf.utils.*
+import ba.sake.tupson.config.*
 
 @main def main: Unit = {
 
-  val config = ConfigFactory.load().parse[PetclinicConfig]()
+  val config = ConfigFactory.load().parseConfig[PetclinicConfig]
 
   val module = PetclinicModule.of(config)
 

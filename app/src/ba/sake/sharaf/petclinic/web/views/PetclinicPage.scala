@@ -12,13 +12,13 @@ trait PetclinicPage extends Page {
   )
 
   override def bodyContent: Frag = frag(
-    Navbar.full(
+    Navbar.nav(
       brandUrl = "/",
       brandName = Some("PetClinic"),
       left = Seq(
-        a(href := "/owners/find", cls := "nav-link")("Find Owners") -> Seq.empty,
-        a(href := "/vets", cls := "nav-link")("Veterinarians") -> Seq.empty,
-        a(href := "/oups", cls := "nav-link")("Error") -> Seq.empty
+        Navbar.link("/owners/find", "Find Owners"),
+        Navbar.link("/vets", "Veterinarians"),
+        Navbar.link("/oups", "Error")
       )
     ),
     div(cls := "container")(

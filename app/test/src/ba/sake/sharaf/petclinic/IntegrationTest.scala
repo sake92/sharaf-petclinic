@@ -2,6 +2,7 @@ package ba.sake.sharaf.petclinic
 
 import org.testcontainers.containers.PostgreSQLContainer
 import com.typesafe.config.ConfigFactory
+import ba.sake.tupson.config.*
 import ba.sake.sharaf.utils.*
 
 trait IntegrationTest extends munit.FunSuite {
@@ -28,7 +29,7 @@ trait IntegrationTest extends munit.FunSuite {
 
       val config = ConfigFactory
         .load()
-        .parse[PetclinicConfig]()
+        .parseConfig[PetclinicConfig]
         .copy(port = port, baseUrl = s"http://localhost:$port", db = dbConfig)
 
       // assign fixture

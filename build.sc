@@ -16,7 +16,7 @@ object app extends ScalaModule with ScalafmtModule {
   )
 
   def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.0.15-8-65e624-SNAPSHOT",
+    ivy"ba.sake::sharaf:0.0.17",
     // db
     ivy"ba.sake::squery:0.0.16",
     ivy"org.flywaydb:flyway-core:8.5.5",
