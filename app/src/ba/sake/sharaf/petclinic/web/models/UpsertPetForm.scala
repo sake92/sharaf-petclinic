@@ -1,6 +1,7 @@
 package ba.sake.sharaf.petclinic.web.models
 
 import java.time.LocalDate
+import io.scalaland.chimney.dsl.*
 import ba.sake.formson.FormDataRW
 import ba.sake.validson.Validator
 import ba.sake.sharaf.petclinic.common.*
@@ -20,8 +21,7 @@ object UpsertPetForm:
 
   val empty = UpsertPetForm("", LocalDate.now(), PetType.bird)
 
-  def fromPet(p: Pet): UpsertPetForm =
-    UpsertPetForm(p.name, p.birthDate, p.petType)
+  def fromPet(p: Pet): UpsertPetForm = p.transformInto[UpsertPetForm]
 
   given Validator[UpsertPetForm] = Validator
     .derived[UpsertPetForm]

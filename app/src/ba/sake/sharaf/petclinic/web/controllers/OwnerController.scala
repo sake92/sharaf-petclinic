@@ -1,5 +1,6 @@
 package ba.sake.sharaf.petclinic.web.controllers
 
+import io.scalaland.chimney.dsl.*
 import ba.sake.validson.*
 import ba.sake.sharaf.*, routing.*
 import ba.sake.sharaf.petclinic.domain.models.*
@@ -55,13 +56,7 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
           val formData = Request.current.bodyForm[UpsertOwnerForm]
           formData.validate match
             case Seq() =>
-              val updatedOwner = owner.copy(
-                firstName = formData.firstName,
-                lastName = formData.lastName,
-                address = formData.address,
-                city = formData.city,
-                telephone = formData.telephone
-              )
+              val updatedOwner = owner.patchUsing(formData)
               ownerService.update(updatedOwner)
               Response.redirect(s"/owners/${ownerId}")
             case errors =>

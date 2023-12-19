@@ -23,6 +23,7 @@ object app extends ScalaModule with ScalafmtModule {
     ivy"com.zaxxer:HikariCP:5.0.1",
     ivy"org.postgresql:postgresql:42.6.0",
     // other
+    ivy"io.scalaland::chimney::0.8.4",
     ivy"ch.qos.logback:logback-classic:1.4.6"
   )
 

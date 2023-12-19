@@ -1,5 +1,6 @@
 package ba.sake.sharaf.petclinic.web.models
 
+import io.scalaland.chimney.dsl.*
 import ba.sake.formson.FormDataRW
 import ba.sake.validson.Validator
 import ba.sake.sharaf.petclinic.domain.models.Owner
@@ -20,8 +21,7 @@ object UpsertOwnerForm:
 
   val empty = UpsertOwnerForm("", "", "", "", "")
 
-  def fromOwner(o: Owner): UpsertOwnerForm =
-    UpsertOwnerForm(o.firstName, o.lastName, o.address, o.city, o.telephone)
+  def fromOwner(o: Owner): UpsertOwnerForm = o.transformInto[UpsertOwnerForm]
 
   given Validator[UpsertOwnerForm] = Validator
     .derived[UpsertOwnerForm]

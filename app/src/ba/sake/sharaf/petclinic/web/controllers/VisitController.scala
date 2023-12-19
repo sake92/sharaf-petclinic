@@ -6,7 +6,7 @@ import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.views.*
 import ba.sake.sharaf.petclinic.web.models.CreateVisitForm
 
-class VisitController(petService: PetService) extends PetclinicController {
+class VisitController(petService: PetService) extends PetclinicController:
 
   override def routes = Routes:
 
@@ -30,4 +30,3 @@ class VisitController(petService: PetService) extends PetclinicController {
               Response.withBody(htmlPage).withStatus(400)
         case None =>
           Response.withStatus(404)
-}
