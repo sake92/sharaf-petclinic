@@ -2,7 +2,7 @@ package ba.sake.sharaf.petclinic.web.views
 
 import Bundle.*, Tags.*
 
-class ErrorPage(message: String) extends PetclinicPage {
+class ErrorPage(message: String) extends PetclinicPage:
 
   override def pageSettings = super.pageSettings
     .withTitle("An error happened :/")
@@ -15,5 +15,3 @@ class ErrorPage(message: String) extends PetclinicPage {
     h2("Stacktrace:"),
     div(message)
   )
-
-}

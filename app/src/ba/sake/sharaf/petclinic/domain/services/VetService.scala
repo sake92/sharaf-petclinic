@@ -6,7 +6,7 @@ import ba.sake.sharaf.petclinic.db.models.vet.*
 import ba.sake.sharaf.petclinic.db.daos.VetDao
 import ba.sake.sharaf.petclinic.domain.models.*
 
-class VetService(vetDao: VetDao) {
+class VetService(vetDao: VetDao):
 
   def findAll(req: PageRequest): PageResponse[Vet] = {
 
@@ -19,4 +19,3 @@ class VetService(vetDao: VetDao) {
 
     PageResponse(pageItems, req.number, rawPage.total)
   }
-}

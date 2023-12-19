@@ -2,7 +2,7 @@ package ba.sake.sharaf.petclinic.web.views
 
 import Bundle.*, Tags.*
 
-trait PetclinicPage extends Page {
+trait PetclinicPage extends Page:
 
   override def siteSettings =
     super.siteSettings.withName("Sharaf Petclinic")
@@ -25,5 +25,3 @@ trait PetclinicPage extends Page {
       pageContent
     )
   )
-
-}

@@ -7,7 +7,7 @@ import ba.sake.sharaf.petclinic.domain.models.*
 import ba.sake.sharaf.petclinic.web.models.*
 import Bundle.*, Tags.*
 
-class OwnersPage(qp: FindOwnerQP, ownersPageRes: PageResponse[Owner]) extends PetclinicPage {
+class OwnersPage(qp: FindOwnerQP, ownersPageRes: PageResponse[Owner]) extends PetclinicPage:
 
   override def pageSettings = super.pageSettings
     .withTitle("Owners")
@@ -32,5 +32,3 @@ class OwnersPage(qp: FindOwnerQP, ownersPageRes: PageResponse[Owner]) extends Pe
   private def getLink(pr: PageRequest): String =
     val newQP = qp.copy(p = pr)
     s"/owners?${newQP.toQueryString()}"
-
-}

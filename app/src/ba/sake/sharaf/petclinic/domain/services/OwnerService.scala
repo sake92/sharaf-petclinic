@@ -31,9 +31,9 @@ class OwnerService(ownerDao: OwnerDao) {
 
   def findByLastName(req: PageRequest, lastName: String): PageResponse[Owner] = {
     val rawPage = ownerDao.findByLastName(req, lastName)
-    val ownersMap = rawPage.rows.groupByOrdered(_.o, _.p)
+    val ownersMap = rawPage.rows.groupByOrderedOpt(_.o, _.p)
     val pageItems = ownersMap.map { case (ownerRow, petRows) =>
-      val pets = petRows.flatten.map(pr => Pet.fromRow(pr, Seq.empty))
+      val pets = petRows.map(pr => Pet.fromRow(pr, Seq.empty))
       Owner.fromRow(ownerRow, pets)
     }.toSeq
 

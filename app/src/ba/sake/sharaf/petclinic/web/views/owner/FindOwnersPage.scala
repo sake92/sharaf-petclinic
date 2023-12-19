@@ -3,7 +3,7 @@ package owner
 
 import Bundle.*, Tags.*
 
-class FindOwnersPage() extends PetclinicPage {
+object FindOwnersPage extends PetclinicPage:
 
   override def pageSettings = super.pageSettings
     .withTitle("Find Owners")
@@ -18,5 +18,3 @@ class FindOwnersPage() extends PetclinicPage {
     hr,
     a(href := "/owners/new", Classes.btnClass, Classes.btnLink)("Add Owner")
   )
-
-}

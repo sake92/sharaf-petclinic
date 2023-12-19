@@ -10,10 +10,10 @@ import ba.sake.sharaf.petclinic.web.views.owner.*
 
 class OwnerController(ownerService: OwnerService) extends PetclinicController {
 
-  override def routes = Routes:
+  override def routes = Routes {
 
     case GET() -> Path("owners", "find") =>
-      Response.withBody(FindOwnersPage())
+      Response.withBody(FindOwnersPage)
 
     case GET() -> Path("owners") =>
       val qp = Request.current.queryParamsValidated[FindOwnerQP]
@@ -65,4 +65,5 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
         case None =>
           Response.withStatus(404)
 
+  }
 }

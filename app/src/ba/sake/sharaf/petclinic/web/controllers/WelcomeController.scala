@@ -7,4 +7,4 @@ class WelcomeController extends PetclinicController:
 
   override def routes = Routes:
     case GET() -> Path() =>
-      Response.withBody(WelcomePage())
+      Response.withBody(WelcomePage)

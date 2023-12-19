@@ -2,7 +2,7 @@ package ba.sake.sharaf.petclinic.web.views
 
 import Bundle.*, Tags.*
 
-class WelcomePage extends PetclinicPage {
+object WelcomePage extends PetclinicPage:
 
   override def pageSettings = super.pageSettings
     .withTitle("Welcome!")
@@ -16,5 +16,3 @@ class WelcomePage extends PetclinicPage {
       [GitHub source](https://github.com/sake92/sharaf-petclinic)
     """.md
   )
-
-}

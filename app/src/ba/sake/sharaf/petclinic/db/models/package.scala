@@ -4,7 +4,8 @@ import java.sql.ResultSet
 import ba.sake.squery.read.SqlRead
 import ba.sake.sharaf.petclinic.common.PetType
 
-given SqlRead[PetType] = new {
+// TODO derive SqlRead automatically
+given SqlRead[PetType] with {
   private val stringRead = SqlRead[String]
 
   override def readByName(jRes: ResultSet, colName: String): Option[PetType] =

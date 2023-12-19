@@ -58,8 +58,7 @@ object PetclinicModule {
     val httpHandler = SharafHandler(routes)
       .withErrorMapper(customErrorMapper.orElse(ErrorMapper.default))
       .withNotFoundHandler { _ =>
-        val errorPage = NotFoundPage
-        Response.withBody(errorPage).withStatus(StatusCodes.NOT_FOUND)
+        Response.withBody(NotFoundPage).withStatus(StatusCodes.NOT_FOUND)
       }
 
     val server = Undertow

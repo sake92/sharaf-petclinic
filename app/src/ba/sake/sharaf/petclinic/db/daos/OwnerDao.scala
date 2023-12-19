@@ -43,7 +43,7 @@ class OwnerDao(ctx: SqueryContext) {
     """.readRows()
   }
 
-  def findByLastName(req: PageRequest, lastName: String): PageResultRows[OwnerWithPetRow] = ctx.run {
+  def findByLastName(req: PageRequest, lastName: String): PageResultRows[OwnerPetRow] = ctx.run {
     val likeArg = s"${lastName}%"
     val query = sql"""
       WITH owners_slice AS (
@@ -59,7 +59,7 @@ class OwnerDao(ctx: SqueryContext) {
       LEFT JOIN pets p ON p.owner_id = o.id
       LEFT JOIN types t ON t.id = p.type_id
     """
-    val items = query.readRows[OwnerWithPetRow]()
+    val items = query.readRows[OwnerPetRow]()
     val total = sql"SELECT COUNT(*) FROM owners WHERE last_name ILIKE ${likeArg}".readValue[Int]()
     PageResultRows(items, total)
   }

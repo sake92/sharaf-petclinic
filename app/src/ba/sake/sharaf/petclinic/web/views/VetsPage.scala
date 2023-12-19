@@ -5,7 +5,7 @@ import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.domain.models.*
 import Bundle.*, Tags.*
 
-class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage {
+class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage:
 
   override def pageSettings = super.pageSettings
     .withTitle("Veterinarians")
@@ -26,5 +26,3 @@ class VetsPage(vetsPageRes: PageResponse[Vet]) extends PetclinicPage {
 
   private def getLink(pr: PageRequest): String =
     s"/vets?${pr.toQueryString()}"
-
-}

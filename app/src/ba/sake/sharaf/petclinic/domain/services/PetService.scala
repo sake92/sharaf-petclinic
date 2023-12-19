@@ -6,7 +6,7 @@ import ba.sake.sharaf.petclinic.db.models.pet.*
 import ba.sake.sharaf.petclinic.db.daos.*
 import ba.sake.sharaf.petclinic.domain.models.*
 
-class PetService(petDao: PetDao) {
+class PetService(petDao: PetDao):
 
   def insert(ownerId: Int, petTypeId: Int, pet: Pet) =
     petDao.insert(ownerId, petTypeId, pet.toRow)
@@ -25,4 +25,3 @@ class PetService(petDao: PetDao) {
 
   def insertVisit(petId: Int, visit: Visit) =
     petDao.insertVisit(petId, visit.toRow)
-}

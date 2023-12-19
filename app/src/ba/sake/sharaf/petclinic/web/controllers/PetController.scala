@@ -9,7 +9,7 @@ import ba.sake.sharaf.petclinic.web.models.UpsertPetForm
 
 class PetController(ownerService: OwnerService, petService: PetService) extends PetclinicController {
 
-  override def routes = Routes:
+  override def routes = Routes {
 
     case GET() -> Path("owners", param[Int](ownerId), "pets", "new") =>
       val htmlPage = CreateOrEditPetPage(ownerId, None, UpsertPetForm.empty, Seq.empty)
@@ -52,4 +52,5 @@ class PetController(ownerService: OwnerService, petService: PetService) extends 
               Response.withBody(htmlPage).withStatus(400)
         case None =>
           Response.withStatus(404)
+  }
 }
