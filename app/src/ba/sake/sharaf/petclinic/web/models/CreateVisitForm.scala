@@ -19,4 +19,4 @@ object CreateVisitForm:
   given Validator[CreateVisitForm] = Validator
     .derived[CreateVisitForm]
     .and(_.date, _.isBefore(LocalDate.now().plusDays(1)), "must be today or in the past")
-    .and(_.description, !_.isBlank(), "must not be blank")
+    .notBlank(_.description)

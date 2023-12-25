@@ -25,7 +25,7 @@ object UpsertPetForm:
 
   given Validator[UpsertPetForm] = Validator
     .derived[UpsertPetForm]
-    .and(_.name, !_.isBlank(), "must not be blank")
+    .notBlank(_.name)
     .and(_.birthDate, _.isBefore(LocalDate.now()), "must be in the past")
 
   def fromPet(p: Pet): UpsertPetForm = p.transformInto[UpsertPetForm]

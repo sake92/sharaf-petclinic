@@ -13,4 +13,4 @@ object PageRequest:
 
   given Validator[PageRequest] = Validator
     .derived[PageRequest]
-    .and(_.number, _ >= 0, "must be >= 0")
+    .positive(_.number)
