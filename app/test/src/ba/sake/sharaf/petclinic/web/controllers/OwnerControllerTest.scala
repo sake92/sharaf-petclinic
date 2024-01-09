@@ -6,7 +6,7 @@ import ba.sake.sharaf.petclinic.domain.models.Owner
 import ba.sake.sharaf.petclinic.web.models.UpsertOwnerForm
 import ba.sake.sharaf.petclinic.IntegrationTest
 
-class ProgramControllerTests extends IntegrationTest {
+class OwnerControllerTests extends IntegrationTest {
 
   val testOwner = Owner(
     1,
