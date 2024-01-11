@@ -11,12 +11,11 @@ object app extends ScalaModule with ScalafmtModule {
   def scalacOptions = super.scalacOptions() ++ Seq(
     "-Yretain-trees",
     "-deprecation",
-    "-Wunused:all",
-    "-explain"
+    "-Wunused:all"
   )
 
   def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.0.18",
+    ivy"ba.sake::sharaf:0.0.19",
     // db
     ivy"ba.sake::squery:0.3.0",
     ivy"org.flywaydb:flyway-core:8.5.5",
