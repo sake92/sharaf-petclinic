@@ -2,6 +2,7 @@ package ba.sake.sharaf.petclinic.web.controllers
 
 import ba.sake.validson.*
 import ba.sake.sharaf.*, routing.*
+import ba.sake.sharaf.exceptions.NotFoundException
 import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.views.*
 import ba.sake.sharaf.petclinic.web.models.CreateVisitForm

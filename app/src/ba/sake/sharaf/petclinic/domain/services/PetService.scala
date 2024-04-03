@@ -1,6 +1,6 @@
 package ba.sake.sharaf.petclinic.domain.services
 
-import ba.sake.sharaf.NotFoundException
+import ba.sake.sharaf.exceptions.NotFoundException
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.pet.*
 import ba.sake.sharaf.petclinic.db.daos.*

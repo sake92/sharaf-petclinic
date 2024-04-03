@@ -1,5 +1,6 @@
 package ba.sake.sharaf.petclinic
 
+import scala.compiletime.uninitialized
 import org.testcontainers.containers.PostgreSQLContainer
 import com.typesafe.config.ConfigFactory
 import ba.sake.tupson.config.*
@@ -9,9 +10,9 @@ trait IntegrationTest extends munit.FunSuite {
 
   protected val itFixture = new Fixture[PetclinicModule]("PetclinicModule") {
 
-    private var pgContainer: PostgreSQLContainer[?] = _
+    private var pgContainer: PostgreSQLContainer[?] = uninitialized
 
-    private var module: PetclinicModule = _
+    private var module: PetclinicModule = uninitialized
 
     def apply() = module
 
