@@ -4,21 +4,16 @@ import ba.sake.squery.{*, given}
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.*, owner.*
 
-class OwnerDao(ctx: SqueryContext) {
+class OwnerDao {
 
-  def insert(o: OwnerRow): OwnerRow = ctx.run {
+  def insert(o: OwnerRow): DbAction[OwnerRow] =
     sql"""
-      INSERT INTO owners(
-        first_name, last_name, address, city, telephone
-      )
-      VALUES (
-        ${o.first_name}, ${o.last_name}, ${o.address}, ${o.city}, ${o.telephone}
-      )
+      INSERT INTO owners(first_name, last_name, address, city, telephone)
+      VALUES (${o.first_name}, ${o.last_name}, ${o.address}, ${o.city}, ${o.telephone})
       RETURNING id, first_name, last_name, address, city, telephone
     """.insertReturningRow[OwnerRow]()
-  }
 
-  def update(o: OwnerRow) = ctx.run {
+  def update(o: OwnerRow): DbAction[Unit] =
     sql"""
       UPDATE owners
       SET first_name =  ${o.first_name},
@@ -28,9 +23,8 @@ class OwnerDao(ctx: SqueryContext) {
           telephone = ${o.telephone}
       WHERE id = ${o.id}
     """.update()
-  }
 
-  def findById(id: Int): Seq[OwnerPetVisitRow] = ctx.run {
+  def findById(id: Int): DbAction[Seq[OwnerPetVisitRow]] =
     sql"""
       SELECT  o.id, o.first_name, o.last_name, o.address, o.city, o.telephone,
               p.id, p.name, p.birth_date, t.name AS "p.pet_type",
@@ -41,9 +35,8 @@ class OwnerDao(ctx: SqueryContext) {
       LEFT JOIN visits v ON v.pet_id = p.id
       WHERE o.id = ${id}
     """.readRows()
-  }
 
-  def findByLastName(req: PageRequest, lastName: String): PageResultRows[OwnerPetRow] = ctx.run {
+  def findByLastName(req: PageRequest, lastName: String): DbAction[PageResultRows[OwnerPetRow]] =
     val likeArg = s"${lastName}%"
     val query = sql"""
       WITH owners_slice AS (
@@ -62,6 +55,5 @@ class OwnerDao(ctx: SqueryContext) {
     val items = query.readRows[OwnerPetRow]()
     val total = sql"SELECT COUNT(*) FROM owners WHERE last_name ILIKE ${likeArg}".readValue[Int]()
     PageResultRows(items, total)
-  }
 
 }

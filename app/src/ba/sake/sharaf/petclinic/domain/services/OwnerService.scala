@@ -1,5 +1,6 @@
 package ba.sake.sharaf.petclinic.domain.services
 
+import ba.sake.squery.SqueryContext
 import ba.sake.squery.utils.*
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.owner.*
@@ -7,16 +8,18 @@ import ba.sake.sharaf.petclinic.db.models.pet.*
 import ba.sake.sharaf.petclinic.db.daos.OwnerDao
 import ba.sake.sharaf.petclinic.domain.models.*
 
-class OwnerService(ownerDao: OwnerDao) {
+class OwnerService(ctx: SqueryContext, ownerDao: OwnerDao) {
 
-  def insert(owner: Owner): Owner =
+  def insert(owner: Owner): Owner = ctx.run {
     val ownerRow = ownerDao.insert(owner.toRow) // new id assigned :)
     owner.copy(id = ownerRow.id)
+  }
 
-  def update(owner: Owner): Unit =
+  def update(owner: Owner): Unit = ctx.run {
     ownerDao.update(owner.toRow)
+  }
 
-  def findById(id: Int): Option[Owner] = {
+  def findById(id: Int): Option[Owner] = ctx.run {
     val rawRows = ownerDao.findById(id)
     val ownersMap = rawRows.groupByOrderedOpt(_.o, r => (r.p.map(_ -> r.v)))
     ownersMap.map { case (ownerRow, petAndVisitRows) =>
@@ -29,7 +32,7 @@ class OwnerService(ownerDao: OwnerDao) {
     }.headOption
   }
 
-  def findByLastName(req: PageRequest, lastName: String): PageResponse[Owner] = {
+  def findByLastName(req: PageRequest, lastName: String): PageResponse[Owner] = ctx.run {
     val rawPage = ownerDao.findByLastName(req, lastName)
     val ownersMap = rawPage.rows.groupByOrderedOpt(_.o, _.p)
     val pageItems = ownersMap.map { case (ownerRow, petRows) =>

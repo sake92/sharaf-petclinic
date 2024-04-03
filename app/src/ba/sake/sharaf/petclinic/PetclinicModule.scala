@@ -30,14 +30,14 @@ object PetclinicModule {
     val flyway = Flyway.configure().dataSource(ds).schemas("petclinic").load()
 
     val squeryContext = SqueryContext(ds)
-    val vetDao = VetDao(squeryContext)
-    val ownerDao = OwnerDao(squeryContext)
-    val petDao = PetDao(squeryContext)
+    val vetDao = VetDao()
+    val ownerDao = OwnerDao()
+    val petDao = PetDao()
 
     // services / domain
-    val vetService = VetService(vetDao)
-    val ownerService = OwnerService(ownerDao)
-    val petService = PetService(petDao)
+    val vetService = VetService(squeryContext, vetDao)
+    val ownerService = OwnerService(squeryContext, ownerDao)
+    val petService = PetService(squeryContext, petDao)
 
     // web
     val controllers =
@@ -49,7 +49,7 @@ object PetclinicModule {
         VisitController(petService),
         CrashController()
       )
-    val routes: Routes = Routes.merge(controllers.map(_.routes))
+    val routes = Routes.merge(controllers.map(_.routes))
 
     val customExceptionMapper: ExceptionMapper = { case e: RuntimeException =>
       val errorPage = ErrorPage(e.getMessage())

@@ -1,14 +1,15 @@
 package ba.sake.sharaf.petclinic.domain.services
 
+import ba.sake.squery.SqueryContext
 import ba.sake.squery.utils.*
 import ba.sake.sharaf.petclinic.common.*
 import ba.sake.sharaf.petclinic.db.models.vet.*
 import ba.sake.sharaf.petclinic.db.daos.VetDao
 import ba.sake.sharaf.petclinic.domain.models.*
 
-class VetService(vetDao: VetDao):
+class VetService(ctx: SqueryContext, vetDao: VetDao):
 
-  def findAll(req: PageRequest): PageResponse[Vet] = {
+  def findAll(req: PageRequest): PageResponse[Vet] = ctx.run {
 
     val rawPage = vetDao.findAll(req)
     val resultsMap = rawPage.rows.groupByOrderedOpt(_.v, _.s)
