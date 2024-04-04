@@ -20,9 +20,10 @@ trait IntegrationTest extends munit.FunSuite {
 
       // start postgres test container
       pgContainer = PostgreSQLContainer("postgres:14")
-      pgContainer = pgContainer.withDatabaseName("petclinic")
-      pgContainer = pgContainer.withUsername("petclinic")
-      pgContainer = pgContainer.withPassword("petclinic_test")
+      pgContainer = pgContainer
+        .withDatabaseName("petclinic")
+        .withUsername("petclinic")
+        .withPassword("petclinic_test")
       pgContainer.start()
 
       val dbConfig = DatabaseConfig(pgContainer.getJdbcUrl(), pgContainer.getUsername(), pgContainer.getPassword())
