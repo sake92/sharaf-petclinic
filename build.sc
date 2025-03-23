@@ -6,7 +6,7 @@ object app extends ScalaModule with ScalafmtModule {
 
   def mainClass = T(Some("ba.sake.sharaf.petclinic.main"))
 
-  def scalaVersion = "3.4.2-RC1"
+  def scalaVersion = "3.6.3"
 
   def scalacOptions = super.scalacOptions() ++ Seq(
     "-Yretain-trees",
@@ -15,8 +15,8 @@ object app extends ScalaModule with ScalafmtModule {
   )
 
   def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.4.0",
-    ivy"ba.sake::squery:0.3.0",
+    ivy"ba.sake::sharaf:0.8.1",
+    ivy"ba.sake::squery:0.6.6",
     ivy"org.flywaydb:flyway-core:8.5.5",
     ivy"com.zaxxer:HikariCP:5.0.1",
     ivy"org.postgresql:postgresql:42.6.0",
