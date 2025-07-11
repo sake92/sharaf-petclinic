@@ -1,14 +1,14 @@
+//| mill-version: 1.0.0
 package build
 
-import mill._
-import mill.scalalib._
-import mill.scalalib.scalafmt._
+import mill.*
+import mill.scalalib.*
 
-object app extends ScalaModule with ScalafmtModule {
+object app extends ScalaModule {
 
-  def mainClass = T(Some("ba.sake.sharaf.petclinic.main"))
+  def mainClass = Task(Some("ba.sake.sharaf.petclinic.main"))
 
-  def scalaVersion = "3.6.3"
+  def scalaVersion = "3.7.1"
 
   def scalacOptions = super.scalacOptions() ++ Seq(
     "-Yretain-trees",
@@ -16,20 +16,21 @@ object app extends ScalaModule with ScalafmtModule {
     "-Wunused:all"
   )
 
-  def ivyDeps = Agg(
-    ivy"ba.sake::sharaf:0.8.1",
-    ivy"ba.sake::squery:0.6.6",
-    ivy"org.flywaydb:flyway-core:8.5.5",
-    ivy"com.zaxxer:HikariCP:5.0.1",
-    ivy"org.postgresql:postgresql:42.6.0",
-    ivy"io.scalaland::chimney::0.8.4",
-    ivy"ch.qos.logback:logback-classic:1.4.6"
+  def mvnDeps = Seq(
+    mvn"ba.sake::sharaf-undertow:0.13.0",
+    mvn"ba.sake::sharaf-hepek-components:0.13.0",
+    mvn"ba.sake::squery:0.7.0",
+    mvn"org.flywaydb:flyway-core:8.5.5",
+    mvn"com.zaxxer:HikariCP:5.0.1",
+    mvn"org.postgresql:postgresql:42.6.0",
+    mvn"io.scalaland::chimney::1.0.0",
+    mvn"ch.qos.logback:logback-classic:1.4.6"
   )
 
   object test extends ScalaTests with TestModule.Munit {
-    def ivyDeps = Agg(
-      ivy"org.scalameta::munit::1.0.3",
-      ivy"org.testcontainers:postgresql:1.17.6"
+    def munitVersion = "1.1.0"
+    def mvnDeps = Seq(
+      mvn"org.testcontainers:postgresql:1.17.6"
     )
   }
 }

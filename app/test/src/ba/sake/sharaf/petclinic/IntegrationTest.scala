@@ -17,8 +17,6 @@ trait IntegrationTest extends munit.FunSuite {
     def apply() = module
 
     override def beforeAll(): Unit =
-
-      // start postgres test container
       pgContainer = PostgreSQLContainer("postgres:14")
       pgContainer = pgContainer
         .withDatabaseName("petclinic")
@@ -26,17 +24,13 @@ trait IntegrationTest extends munit.FunSuite {
         .withPassword("petclinic_test")
       pgContainer.start()
 
-      val dbConfig = DatabaseConfig(pgContainer.getJdbcUrl(), pgContainer.getUsername(), pgContainer.getPassword())
-      val port = getFreePort()
-
+      val dbConfig = DatabaseConfig(pgContainer.getJdbcUrl, pgContainer.getUsername, pgContainer.getPassword)
+      val port = NetworkUtils.getFreePort()
       val config = ConfigFactory
         .load()
         .parseConfig[PetclinicConfig]
         .copy(port = port, baseUrl = s"http://localhost:$port", db = dbConfig)
-
-      // assign fixture
       module = PetclinicModule(config)
-
       module.flyway.migrate()
       module.server.start()
 

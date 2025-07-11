@@ -1,6 +1,8 @@
 package ba.sake.sharaf.petclinic.web.controllers
 
-import io.undertow.util.StatusCodes
+import sttp.model.StatusCode
+import sttp.client4.quick.*
+import ba.sake.sharaf.*
 import ba.sake.sharaf.utils.*
 import ba.sake.sharaf.petclinic.domain.models.Owner
 import ba.sake.sharaf.petclinic.web.models.UpsertOwnerForm
@@ -21,57 +23,50 @@ class OwnerControllerTests extends IntegrationTest {
   test("Find owners page") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
-    val res = requests.get(s"${baseUrl}/owners/find")
-    assertEquals(res.statusCode, StatusCodes.OK)
-    assert(res.text().contains("<h1>Find Owners</h1>"))
+    val res = quickRequest.get(uri"${baseUrl}/owners/find").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("<h1>Find Owners</h1>"))
   }
 
   test("Find owners result page") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
-    val res = requests.get(s"${baseUrl}/owners")
-    assertEquals(res.statusCode, StatusCodes.OK)
-    assert(res.text().contains("<h1>Owners</h1>"))
+    val res = quickRequest.get(uri"${baseUrl}/owners").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("<h1>Owners</h1>"))
   }
 
   test("Find owners by last name (single owner found)") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
-    val res = requests.get(
-      s"${baseUrl}/owners?q=Franklin",
-      check = false, // dont fail on non 2xx code
-      maxRedirects = 0 // dont follow redirect
-    )
-    assertEquals(res.statusCode, StatusCodes.MOVED_PERMANENTLY)
+    val res = quickRequest
+      .get(uri"${baseUrl}/owners?q=Franklin")
+      .followRedirects(false)
+      .send()
+    assertEquals(res.code, StatusCode.MovedPermanently)
     assertEquals(res.headers("location").head, "/owners/1")
   }
 
   test("Show owner page") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
-    val res = requests.get(s"${baseUrl}/owners/${testOwner.id}")
-    assertEquals(res.statusCode, StatusCodes.OK)
-    assert(res.text().contains("<h1>Owner details</h1>"))
+    val res = quickRequest.get(uri"${baseUrl}/owners/${testOwner.id}").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("<h1>Owner details</h1>"))
   }
 
   /* CREATE */
   test("Create owner page") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
-    val res = requests.get(s"${baseUrl}/owners/new")
-    assertEquals(res.statusCode, StatusCodes.OK)
-    assert(res.text().contains("<h1>Create Owner</h1>"))
+    val res = quickRequest.get(uri"${baseUrl}/owners/new").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("<h1>Create Owner</h1>"))
   }
 
   test("Process create owner form") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
     val reqBody = UpsertOwnerForm(
       "firstName",
       "lastName",
@@ -79,21 +74,18 @@ class OwnerControllerTests extends IntegrationTest {
       "city",
       "1234567890"
     )
-
-    val res = requests.post(
-      s"${baseUrl}/owners/new",
-      data = reqBody.toRequestsMultipart(),
-      check = false, // dont fail on non 2xx code
-      maxRedirects = 0 // dont follow redirect
-    )
-    assertEquals(res.statusCode, StatusCodes.MOVED_PERMANENTLY)
+    val res = quickRequest
+      .post(uri"${baseUrl}/owners/new")
+      .multipartBody(reqBody.toSttpMultipart())
+      .followRedirects(false)
+      .send()
+    assertEquals(res.code, StatusCode.MovedPermanently)
     assert(res.headers("location").head.startsWith("/owners"))
   }
 
   test("Process create owner form with errors") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
     val reqBody = UpsertOwnerForm(
       " ", // firstName mustn't be blank
       "lastName",
@@ -101,30 +93,26 @@ class OwnerControllerTests extends IntegrationTest {
       "city",
       "123456789" // one digit missing
     )
-
-    val res = requests.post(
-      s"${baseUrl}/owners/new",
-      data = reqBody.toRequestsMultipart(),
-      check = false, // dont fail on non 2xx code
-      maxRedirects = 0 // dont follow redirect
-    )
-    assertEquals(res.statusCode, StatusCodes.BAD_REQUEST)
+    val res = quickRequest
+      .post(uri"${baseUrl}/owners/new")
+      .multipartBody(reqBody.toSttpMultipart())
+      .followRedirects(false)
+      .send()
+    assertEquals(res.code, StatusCode.BadRequest)
   }
 
   /* UPDATE */
   test("Update owner page") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
-    val res = requests.get(s"${baseUrl}/owners/${testOwner.id}/edit")
-    assertEquals(res.statusCode, StatusCodes.OK)
-    assert(res.text().contains("<h1>Edit Owner</h1>"))
+    val res = quickRequest.get(uri"${baseUrl}/owners/${testOwner.id}/edit").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("<h1>Edit Owner</h1>"))
   }
 
   test("Process update owner form") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl
-
     val reqBody = UpsertOwnerForm(
       "firstName",
       "lastName",
@@ -132,15 +120,13 @@ class OwnerControllerTests extends IntegrationTest {
       "city",
       "1234567890"
     )
-
-    val res = requests.post(
-      s"${baseUrl}/owners/${testOwner.id}/edit",
-      data = reqBody.toRequestsMultipart(),
-      check = false, // dont fail on non 2xx code
-      maxRedirects = 0 // dont follow redirect
-    )
-    assertEquals(res.statusCode, StatusCodes.MOVED_PERMANENTLY)
-    assert(res.headers("location").head.startsWith("/owners"))
+    val res = quickRequest
+      .post(uri"${baseUrl}/owners/${testOwner.id}/edit")
+      .multipartBody(reqBody.toSttpMultipart())
+      .followRedirects(false)
+      .send()
+    assertEquals(res.code, StatusCode.MovedPermanently)
+    assert(res.header("location").get.startsWith("/owners"), "Expected redirect to owner page")
   }
 
 }

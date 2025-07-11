@@ -1,10 +1,11 @@
 package ba.sake.sharaf.petclinic.web.controllers
 
-import ba.sake.sharaf.*, routing.*
+import ba.sake.sharaf.*
+import ba.sake.sharaf.hepek.given
 import ba.sake.sharaf.petclinic.web.views.*
 
-class WelcomeController extends PetclinicController:
+class WelcomeController extends SharafController:
 
   override def routes = Routes:
-    case GET() -> Path() =>
+    case GET -> Path() =>
       Response.withBody(WelcomePage)

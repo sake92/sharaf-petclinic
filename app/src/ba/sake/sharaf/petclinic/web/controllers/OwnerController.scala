@@ -2,20 +2,22 @@ package ba.sake.sharaf.petclinic.web.controllers
 
 import io.scalaland.chimney.dsl.*
 import ba.sake.validson.*
-import ba.sake.sharaf.*, routing.*
+import ba.sake.sharaf.*
+import ba.sake.sharaf.hepek.given
 import ba.sake.sharaf.petclinic.domain.models.*
 import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.models.*
 import ba.sake.sharaf.petclinic.web.views.owner.*
+import sttp.model.StatusCode
 
-class OwnerController(ownerService: OwnerService) extends PetclinicController {
+class OwnerController(ownerService: OwnerService) extends SharafController {
 
   override def routes = Routes {
 
-    case GET() -> Path("owners", "find") =>
+    case GET -> Path("owners", "find") =>
       Response.withBody(FindOwnersPage)
 
-    case GET() -> Path("owners") =>
+    case GET -> Path("owners") =>
       val qp = Request.current.queryParamsValidated[FindOwnerQP]
       val pageRes = ownerService.findByLastName(qp.p, qp.q.getOrElse(""))
       if pageRes.items.size == 1 then
@@ -23,15 +25,15 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
         Response.redirect(s"/owners/${owner.id}")
       else Response.withBody(OwnersPage(qp, pageRes))
 
-    case GET() -> Path("owners", param[Int](ownerId)) =>
+    case GET -> Path("owners", param[Int](ownerId)) =>
       val ownerOpt = ownerService.findById(ownerId)
       val htmlPageOpt = ownerOpt.map(OwnerDetailsPage(_))
       Response.withBodyOpt(htmlPageOpt, "Owner")
 
-    case GET() -> Path("owners", "new") =>
+    case GET -> Path("owners", "new") =>
       Response.withBody(CreateOrEditOwnerPage(None, UpsertOwnerForm.empty, Seq.empty))
 
-    case POST() -> Path("owners", "new") =>
+    case POST -> Path("owners", "new") =>
       val formData = Request.current.bodyForm[UpsertOwnerForm]
       formData.validate match
         case Seq() =>
@@ -39,9 +41,9 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
           Response.redirect(s"/owners/${newOwner.id}")
         case errors =>
           val htmlPage = CreateOrEditOwnerPage(None, formData, errors)
-          Response.withBody(htmlPage).withStatus(400)
+          Response.withBody(htmlPage).withStatus(StatusCode.BadRequest)
 
-    case GET() -> Path("owners", param[Int](ownerId), "edit") =>
+    case GET -> Path("owners", param[Int](ownerId), "edit") =>
       val ownerOpt = ownerService.findById(ownerId)
       val htmlPageOpt = ownerOpt.map { owner =>
         val formData = UpsertOwnerForm.fromOwner(owner)
@@ -49,7 +51,7 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
       }
       Response.withBodyOpt(htmlPageOpt, "Owner")
 
-    case POST() -> Path("owners", param[Int](ownerId), "edit") =>
+    case POST -> Path("owners", param[Int](ownerId), "edit") =>
       val ownerOpt = ownerService.findById(ownerId)
       ownerOpt match
         case Some(owner) =>
@@ -61,9 +63,9 @@ class OwnerController(ownerService: OwnerService) extends PetclinicController {
               Response.redirect(s"/owners/${ownerId}")
             case errors =>
               val htmlPage = CreateOrEditOwnerPage(Some(ownerId), formData, errors)
-              Response.withBody(htmlPage).withStatus(400)
+              Response.withBody(htmlPage).withStatus(StatusCode.BadRequest)
         case None =>
-          Response.withStatus(404)
+          Response.withStatus(StatusCode.NotFound)
 
   }
 }

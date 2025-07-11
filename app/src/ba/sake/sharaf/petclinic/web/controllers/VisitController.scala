@@ -1,23 +1,25 @@
 package ba.sake.sharaf.petclinic.web.controllers
 
 import ba.sake.validson.*
-import ba.sake.sharaf.*, routing.*
+import ba.sake.sharaf.*
+import ba.sake.sharaf.hepek.given
 import ba.sake.sharaf.exceptions.NotFoundException
 import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.views.*
 import ba.sake.sharaf.petclinic.web.models.CreateVisitForm
+import sttp.model.StatusCode
 
-class VisitController(petService: PetService) extends PetclinicController:
+class VisitController(petService: PetService) extends SharafController:
 
   override def routes = Routes:
 
-    case GET() -> Path("owners", param[Int](ownerId), "pets", param[Int](petId), "visits", "new") =>
+    case GET -> Path("owners", param[Int](ownerId), "pets", param[Int](petId), "visits", "new") =>
       val pet = petService.findById(ownerId, petId).getOrElse(throw NotFoundException(s"Pet: $ownerId"))
       val formData = CreateVisitForm.empty
       val htmlPage = CreateVisitPage(ownerId, pet.id, formData, Seq.empty)
       Response.withBody(htmlPage)
 
-    case POST() -> Path("owners", param[Int](ownerId), "pets", param[Int](petId), "visits", "new") =>
+    case POST -> Path("owners", param[Int](ownerId), "pets", param[Int](petId), "visits", "new") =>
       val petOpt = petService.findById(ownerId, petId)
       petOpt match
         case Some(pet) =>
@@ -28,6 +30,6 @@ class VisitController(petService: PetService) extends PetclinicController:
               Response.redirect(s"/owners/${ownerId}")
             case errors =>
               val htmlPage = CreateVisitPage(ownerId, pet.id, formData, errors)
-              Response.withBody(htmlPage).withStatus(400)
+              Response.withBody(htmlPage).withStatus(StatusCode.BadRequest)
         case None =>
-          Response.withStatus(404)
+          Response.withStatus(StatusCode.NotFound)
