@@ -4,7 +4,6 @@ import java.time.LocalDate
 import sttp.model.StatusCode
 import sttp.client4.quick.*
 import ba.sake.sharaf.*
-import ba.sake.sharaf.utils.*
 import ba.sake.sharaf.petclinic.common.PetType
 import ba.sake.sharaf.petclinic.domain.models.*
 import ba.sake.sharaf.petclinic.web.models.UpsertPetForm

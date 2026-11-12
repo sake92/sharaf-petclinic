@@ -3,6 +3,8 @@
 This is a [PetClinic](https://spring-petclinic.github.io/) implementation  
 with the [Sharaf](https://github.com/sake92/sharaf) mini framework.
 
+Requires Java 21 and sbt.
+
 ## Run
 
 ```sh
@@ -10,7 +12,7 @@ with the [Sharaf](https://github.com/sake92/sharaf) mini framework.
 docker compose up -d
 
 # run the server
-./mill app.run
+sbt run
 ```
 
 Then go to http://localhost:9001
@@ -18,7 +20,7 @@ Then go to http://localhost:9001
 ## Test
 
 ```sh
-./mill app.test
+sbt testFull
 ```
 
 Integration tests are written with help of [Testcontainers](https://testcontainers.com/guides/getting-started-with-testcontainers-for-java/).  

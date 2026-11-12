@@ -1,16 +1,15 @@
 package ba.sake.sharaf.petclinic
 
 import scala.compiletime.uninitialized
-import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.postgresql.PostgreSQLContainer
 import com.typesafe.config.ConfigFactory
 import ba.sake.tupson.config.*
-import ba.sake.sharaf.utils.*
 
 trait IntegrationTest extends munit.FunSuite {
 
   protected val itFixture = new Fixture[PetclinicModule]("PetclinicModule") {
 
-    private var pgContainer: PostgreSQLContainer[?] = uninitialized
+    private var pgContainer: PostgreSQLContainer = uninitialized
 
     private var module: PetclinicModule = uninitialized
 
@@ -25,7 +24,8 @@ trait IntegrationTest extends munit.FunSuite {
       pgContainer.start()
 
       val dbConfig = DatabaseConfig(pgContainer.getJdbcUrl, pgContainer.getUsername, pgContainer.getPassword)
-      val port = NetworkUtils.getFreePort()
+      val socket = new java.net.ServerSocket(0)
+      val port = try socket.getLocalPort finally socket.close()
       val config = ConfigFactory
         .load()
         .parseConfig[PetclinicConfig]

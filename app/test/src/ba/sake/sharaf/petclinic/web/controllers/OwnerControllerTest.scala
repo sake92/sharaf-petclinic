@@ -3,7 +3,6 @@ package ba.sake.sharaf.petclinic.web.controllers
 import sttp.model.StatusCode
 import sttp.client4.quick.*
 import ba.sake.sharaf.*
-import ba.sake.sharaf.utils.*
 import ba.sake.sharaf.petclinic.domain.models.Owner
 import ba.sake.sharaf.petclinic.web.models.UpsertOwnerForm
 import ba.sake.sharaf.petclinic.IntegrationTest

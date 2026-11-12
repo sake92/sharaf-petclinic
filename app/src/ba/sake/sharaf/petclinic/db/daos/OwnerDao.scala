@@ -11,7 +11,7 @@ class OwnerDao {
       INSERT INTO owners(first_name, last_name, address, city, telephone)
       VALUES (${o.first_name}, ${o.last_name}, ${o.address}, ${o.city}, ${o.telephone})
       RETURNING id, first_name, last_name, address, city, telephone
-    """.insertReturningRow[OwnerRow]()
+    """.returningRow[OwnerRow]()
 
   def update(o: OwnerRow): DbAction[Unit] =
     sql"""
