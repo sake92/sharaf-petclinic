@@ -35,6 +35,20 @@ class OwnerControllerTests extends IntegrationTest {
     assert(res.body.contains("<h1>Owners</h1>"))
   }
 
+  test("No matching owners show a message without next page") {
+    val res = quickRequest.get(uri"${itFixture().config.baseUrl}/owners?q=meho").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("No results found"))
+    assert(!res.body.contains(">Next</a>"))
+  }
+
+  test("An out-of-range owner page has no next page") {
+    val res = quickRequest.get(uri"${itFixture().config.baseUrl}/owners?p.number=99").send()
+    assertEquals(res.code, StatusCode.Ok)
+    assert(res.body.contains("No results found"))
+    assert(!res.body.contains(">Next</a>"))
+  }
+
   test("Find owners by last name (single owner found)") {
     val fixture = itFixture()
     val baseUrl = fixture.config.baseUrl

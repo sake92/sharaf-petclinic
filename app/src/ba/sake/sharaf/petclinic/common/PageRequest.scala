@@ -13,4 +13,4 @@ object PageRequest:
 
   given Validator[PageRequest] = Validator
     .derived[PageRequest]
-    .positive(_.number)
+    .nonNegative(_.number)

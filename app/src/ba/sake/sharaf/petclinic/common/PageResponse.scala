@@ -16,7 +16,7 @@ case class PageResponse[T](
 
   def isFirst: Boolean = number == 0
 
-  def isLast: Boolean = number == totalPages - 1
+  def isLast: Boolean = number >= totalPages - 1
 
   def prevPageReq: PageRequest =
     val prevOrFirst = if isFirst then 0 else (number - 1)

@@ -39,7 +39,8 @@ object fragments {
           cls := "page-item",
           Option.when(pageRes.isLast)(cls := "disabled")
         )(
-          a(href := getLink(pageRes.nextPageReq), cls := "page-link")("Next")
+          if pageRes.isLast then span(cls := "page-link")("Next")
+          else a(href := getLink(pageRes.nextPageReq), cls := "page-link")("Next")
         )
       )
     )
