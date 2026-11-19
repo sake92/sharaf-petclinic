@@ -1,15 +1,13 @@
-ThisBuild / scalaVersion := "3.9.0"
+scalaVersion := "3.9.0"
 
 lazy val root = project.in(file("."))
   .settings(
-    Compile / scalaSource := baseDirectory.value / "app" / "src",
-    Compile / resourceDirectory := baseDirectory.value / "app" / "resources",
-    Test / scalaSource := baseDirectory.value / "app" / "test" / "src",
     Compile / mainClass := Some("ba.sake.sharaf.petclinic.main"),
     scalacOptions ++= Seq("-Yretain-trees", "-deprecation", "-Wunused:all"),
     libraryDependencies ++= Seq(
-      "ba.sake" %% "sharaf-undertow" % "0.21.0",
-      "ba.sake" %% "sharaf-hepek-components" % "0.21.0",
+      "ba.sake" %% "sharaf-potateh" % "0.24.0",
+      "ba.sake" %% "sharaf-hepek-components" % "0.24.0",
+      "ba.sake" %% "tupson-config" % "0.32.1",
       "ba.sake" %% "squery" % "0.13.0",
       "org.flywaydb" % "flyway-core" % "13.12.1",
       "org.flywaydb" % "flyway-database-postgresql" % "13.12.1",

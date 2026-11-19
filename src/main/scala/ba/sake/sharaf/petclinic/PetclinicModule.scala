@@ -9,14 +9,14 @@ import ba.sake.sharaf.petclinic.db.daos.*
 import ba.sake.sharaf.petclinic.domain.services.*
 import ba.sake.sharaf.petclinic.web.controllers.*
 import ba.sake.sharaf.petclinic.web.views.*
-import ba.sake.sharaf.undertow.UndertowSharafServer
+import ba.sake.sharaf.potateh.PotatehSharafServer
 import sttp.model.StatusCode
 import scala.util.control.NonFatal
 
 case class PetclinicModule(
     config: PetclinicConfig,
     flyway: Flyway,
-    server: UndertowSharafServer
+    server: PotatehSharafServer
 )
 
 object PetclinicModule {
@@ -57,12 +57,15 @@ object PetclinicModule {
       val message = if status.code >= 500 then "Please try again later." else "Please check your request and try again."
       Response.withBody(ErrorPage(message)).withStatus(status)
     }
-    val server = UndertowSharafServer(
-      "0.0.0.0",
-      config.port,
+    val server = PotatehSharafServer(
       routes,
+      host = "0.0.0.0",
+      port = config.port,
       exceptionMapper = customExceptionMapper,
-      notFoundHandler = _ => Response.withBody(NotFoundPage).withStatus(StatusCode.NotFound)
+      notFoundHandler = SharafHandler.classpathResources(
+        "public",
+        _ => Response.withBody(NotFoundPage).withStatus(StatusCode.NotFound)
+      )
     )
 
     PetclinicModule(config, flyway, server)
